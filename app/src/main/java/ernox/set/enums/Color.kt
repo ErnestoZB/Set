@@ -6,5 +6,5 @@ package ernox.set.enums
 enum class Color {
     RED,
     GREEN,
-    PURPLE
+    BLUE
 }
