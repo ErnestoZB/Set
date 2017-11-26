@@ -1,24 +1,18 @@
 package ernox.set.models
 
-import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by Ernesto on 25/11/2017.
  */
-data class Deck(val cards: Array<Card>) {
+data class Deck(val cards: ArrayList<Card>) {
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+    fun removeCard() : Card? {
+        var card: Card? = null
 
-        other as Deck
+        if(!cards.isEmpty())
+            card = cards.removeAt(0)
 
-        if (!Arrays.equals(cards, other.cards)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return Arrays.hashCode(cards)
+        return card
     }
 }
