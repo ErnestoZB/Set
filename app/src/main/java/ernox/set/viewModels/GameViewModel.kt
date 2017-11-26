@@ -30,6 +30,12 @@ class GameViewModel : ViewModel() {
         return selectedCards
     }
 
+    private var score = 0
+    fun getScore(): Int {
+        return score
+    }
+
+
     val errorMessageId: ObservableField<Int> = ObservableField()
 
 
@@ -50,7 +56,7 @@ class GameViewModel : ViewModel() {
 
     private fun fillDeck() {
 
-        var cards: ArrayList<Card> = ArrayList()
+        val cards: ArrayList<Card> = ArrayList()
 
         for (number in 1..3)
             for(color in Color.values())
@@ -68,39 +74,56 @@ class GameViewModel : ViewModel() {
 
     fun onCardSelected(card: Card) {
         addToSelectedCards(card)
-    }
-
-    private fun addToSelectedCards(card: Card) {
-        selectedCards.add(card)
 
         if(selectedCards.size == 3)
         {
-            areSelectedCardsASet()
+            if(areSelectedCardsASet())
+            {
+                increaseScore()
+
+                putNewCardsInTable()
+            }
 
             selectedCards.clear()
         }
     }
 
-    private fun areSelectedCardsASet() {
+    private fun addToSelectedCards(card: Card) {
+        selectedCards.add(card)
+    }
+
+    private fun putNewCardsInTable() {
+
+        for(card in selectedCards) {
+            val position = tableCards.indexOf(card)
+
+            deck.removeCard()?.let { tableCards.set(position, it) }
+        }
+    }
+
+    private fun areSelectedCardsASet() : Boolean {
 
         if(!isColorRuleSatisfied()) {
             errorMessageId.set( R.string.rule_color )
-            return
+            return false
         }
 
         if(!isShadingRuleSatisfied()) {
             errorMessageId.set( R.string.rule_shading )
-            return
+            return false
         }
 
         if(!isSymbolRuleSatisfied()) {
             errorMessageId.set( R.string.rule_symbol )
+            return false
         }
 
         if(!isNumberRulesSatisfied()) {
             errorMessageId.set( R.string.rule_number )
-            return
+            return false
         }
+
+        return true
     }
 
     private fun isNumberRulesSatisfied(): Boolean {
@@ -138,4 +161,7 @@ class GameViewModel : ViewModel() {
         return symbol1 == symbol2 && symbol2 == symbol3 || symbol1 != symbol2 && symbol2 != symbol3 && symbol3 != symbol1
     }
 
+    private fun increaseScore() {
+        score++
+    }
 }
