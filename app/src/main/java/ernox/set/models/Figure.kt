@@ -9,4 +9,19 @@ import ernox.set.enums.Symbol
  */
 data class Figure(val symbol: Symbol,
                   val shading: Shading,
-                  val color: Color)
+                  val color: Color) {
+
+
+    fun getDrawableName() : String {
+
+        val nameBuilder = StringBuilder()
+
+        nameBuilder.append("ic_")
+                   .append(color.name).append("_")
+                   .append(symbol.name).append("_")
+                   .append(shading.name)
+                   .append(".xml")
+
+        return nameBuilder.toString().toLowerCase()
+    }
+}
