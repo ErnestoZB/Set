@@ -1,6 +1,8 @@
 package ernox.set.viewModels
 
 import android.arch.lifecycle.ViewModel
+import android.databinding.ObservableField
+import ernox.set.R
 import ernox.set.enums.Color
 import ernox.set.enums.Shading
 import ernox.set.enums.Symbol
@@ -27,6 +29,8 @@ class GameViewModel : ViewModel() {
     fun getSelectedCards(): ArrayList<Card> {
         return selectedCards
     }
+
+    val errorMessageId: ObservableField<Int> = ObservableField()
 
 
     fun onPrepareGame() {
@@ -79,5 +83,59 @@ class GameViewModel : ViewModel() {
 
     private fun areSelectedCardsASet() {
 
+        if(!isColorRuleSatisfied()) {
+            errorMessageId.set( R.string.rule_color )
+            return
+        }
+
+        if(!isShadingRuleSatisfied()) {
+            errorMessageId.set( R.string.rule_shading )
+            return
+        }
+
+        if(!isSymbolRuleSatisfied()) {
+            errorMessageId.set( R.string.rule_symbol )
+        }
+
+        if(!isNumberRulesSatisfied()) {
+            errorMessageId.set( R.string.rule_number )
+            return
+        }
     }
+
+    private fun isNumberRulesSatisfied(): Boolean {
+        val number1 = selectedCards[0].numberOfFigures
+        val number2 = selectedCards[1].numberOfFigures
+        val number3 = selectedCards[2].numberOfFigures
+
+        return number1 == number2 && number2 == number3 || number1 != number2 && number2 != number3 && number3 != number1
+    }
+
+    private fun isColorRuleSatisfied(): Boolean {
+
+        val color1 = selectedCards[0].figure.color
+        val color2 = selectedCards[1].figure.color
+        val color3 = selectedCards[2].figure.color
+
+        return color1 == color2 && color2 == color3 || color1 != color2 && color2 != color3 && color3 != color1
+    }
+
+    private fun isShadingRuleSatisfied(): Boolean {
+
+        val shading1 = selectedCards[0].figure.shading
+        val shading2 = selectedCards[1].figure.shading
+        val shading3 = selectedCards[2].figure.shading
+
+        return shading1 == shading2 && shading2 == shading3 || shading1 != shading2 && shading2 != shading3 && shading3 != shading1
+    }
+
+    private fun isSymbolRuleSatisfied(): Boolean {
+
+        val symbol1 = selectedCards[0].figure.symbol
+        val symbol2 = selectedCards[1].figure.symbol
+        val symbol3 = selectedCards[2].figure.symbol
+
+        return symbol1 == symbol2 && symbol2 == symbol3 || symbol1 != symbol2 && symbol2 != symbol3 && symbol3 != symbol1
+    }
+
 }

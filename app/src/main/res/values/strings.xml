@@ -5,4 +5,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="rule_color">Color rule is not satisfied</string>
+    <string name="rule_shading">Shading rule is not satisfied</string>
+    <string name="rule_symbol">Symbol rule is not satisfied</string>
+    <string name="rule_number">Number rule is not satisfied</string>
+
 </resources>
