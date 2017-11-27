@@ -20,7 +20,6 @@ data class Figure(val symbol: Symbol,
                    .append(color.name).append("_")
                    .append(symbol.name).append("_")
                    .append(shading.name)
-                   .append(".xml")
 
         return nameBuilder.toString().toLowerCase()
     }

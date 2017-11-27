@@ -1,35 +1,58 @@
 package ernox.set.views
 
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import ernox.set.R
+import ernox.set.adapters.CardAdapter
+import ernox.set.viewModels.GameViewModel
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.app_bar_game.*
+import kotlinx.android.synthetic.main.content_game.*
 
 class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    private lateinit var viewModel: GameViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-
-        val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
+        viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
+
+
+
+        viewModel.onPrepareGame()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.onStartGame()
+
+
+        setUpGameTable()
+    }
+
+    private fun setUpGameTable() {
+
+        game_table.layoutManager = GridLayoutManager(applicationContext, 3)
+
+        game_table.setHasFixedSize(true)
+
+        game_table.adapter = CardAdapter(viewModel.getTableCards())
     }
 
     override fun onBackPressed() {

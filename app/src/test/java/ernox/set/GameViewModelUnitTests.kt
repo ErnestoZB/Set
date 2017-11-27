@@ -32,7 +32,7 @@ class GameViewModelUnitTests {
     }
 
     @Test
-    fun should_Have12CardsOnTable_When_lGameStarts() {
+    fun should_Have12CardsOnTable_When_GameStarts() {
 
         // Act
         viewModel.onPrepareGame()
@@ -176,6 +176,5 @@ class GameViewModelUnitTests {
         viewModel.getTableCards()[tablePosition] = card
 
         viewModel.onCardSelected(card)
-
     }
 }

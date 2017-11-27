@@ -9,6 +9,7 @@ import ernox.set.enums.Symbol
 import ernox.set.models.Card
 import ernox.set.models.Deck
 import ernox.set.models.Figure
+import java.util.*
 
 /**
  * Created by Ernesto on 25/11/2017.
@@ -21,6 +22,8 @@ class GameViewModel : ViewModel() {
     }
 
     private lateinit var tableCards: ArrayList<Card>
+
+
     fun getTableCards(): ArrayList<Card> {
         return tableCards
     }
@@ -41,6 +44,7 @@ class GameViewModel : ViewModel() {
 
     fun onPrepareGame() {
         fillDeck()
+        shuffleDeck()
     }
 
     fun onStartGame() {
@@ -70,6 +74,11 @@ class GameViewModel : ViewModel() {
                     }
 
         deck = Deck(cards)
+    }
+
+    private fun shuffleDeck() {
+        val seed = System.nanoTime()
+        Collections.shuffle(deck.cards, Random(seed))
     }
 
     fun onCardSelected(card: Card) {
