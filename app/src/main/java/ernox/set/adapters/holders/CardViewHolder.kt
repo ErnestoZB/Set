@@ -6,19 +6,25 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import ernox.set.R
+import ernox.set.interfaces.OnItemClickedListener
 import ernox.set.models.Card
 
 
 /**
  * Created by Ernesto on 26/11/2017.
  */
-class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class CardViewHolder(itemView: View,
+                     private val onItemClickedListener: OnItemClickedListener<Card>) : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(card: Card) {
+    fun bind(position: Int, card: Card) {
 
         val figureId = getImageId(card.figure.getDrawableName())
 
         addFiguresToCard(card.numberOfFigures, figureId)
+
+        itemView.setOnClickListener {
+            onItemClickedListener.onItemClicked(position, card, itemView)
+        }
     }
 
     private fun getContext() : Context = itemView.context

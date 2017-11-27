@@ -10,9 +10,14 @@ import org.junit.Test
 
 import org.junit.Assert.*
 import org.junit.Before
-
+import android.arch.core.executor.testing.InstantTaskExecutorRule
+import org.junit.Rule
 
 class GameViewModelUnitTests {
+
+    @Rule
+    @JvmField
+    var rule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: GameViewModel
 
@@ -90,7 +95,7 @@ class GameViewModelUnitTests {
         selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
-        assertEquals(R.string.rule_color, viewModel.errorMessageId.get())
+        assertEquals(R.string.rule_color, viewModel.getErrorMessageId().value!!)
     }
 
     @Test
@@ -104,7 +109,7 @@ class GameViewModelUnitTests {
         selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
-        assertEquals(R.string.rule_shading, viewModel.errorMessageId.get())
+        assertEquals(R.string.rule_shading, viewModel.getErrorMessageId().value!!)
     }
 
     @Test
@@ -118,7 +123,7 @@ class GameViewModelUnitTests {
         selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
-        assertEquals(R.string.rule_symbol, viewModel.errorMessageId.get())
+        assertEquals(R.string.rule_symbol, viewModel.getErrorMessageId().value!!)
     }
 
     @Test
@@ -132,7 +137,7 @@ class GameViewModelUnitTests {
         selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
-        assertEquals(R.string.rule_number, viewModel.errorMessageId.get())
+        assertEquals(R.string.rule_number, viewModel.getErrorMessageId().value!!)
     }
 
     @Test

@@ -1,5 +1,7 @@
 package ernox.set.viewModels
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import ernox.set.R
@@ -38,8 +40,8 @@ class GameViewModel : ViewModel() {
         return score
     }
 
-
-    val errorMessageId: ObservableField<Int> = ObservableField()
+    private var errorMessageId : MutableLiveData<Int> = MutableLiveData()
+    fun getErrorMessageId() : LiveData<Int> = errorMessageId
 
 
     fun onPrepareGame() {
@@ -113,22 +115,22 @@ class GameViewModel : ViewModel() {
     private fun areSelectedCardsASet() : Boolean {
 
         if(!isColorRuleSatisfied()) {
-            errorMessageId.set( R.string.rule_color )
+            errorMessageId.value = R.string.rule_color
             return false
         }
 
         if(!isShadingRuleSatisfied()) {
-            errorMessageId.set( R.string.rule_shading )
+            errorMessageId.value = R.string.rule_shading
             return false
         }
 
         if(!isSymbolRuleSatisfied()) {
-            errorMessageId.set( R.string.rule_symbol )
+            errorMessageId.value = R.string.rule_symbol
             return false
         }
 
         if(!isNumberRulesSatisfied()) {
-            errorMessageId.set( R.string.rule_number )
+            errorMessageId.value = R.string.rule_number
             return false
         }
 

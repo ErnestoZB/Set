@@ -1,6 +1,8 @@
 package ernox.set.views
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -9,14 +11,24 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import ernox.set.R
 import ernox.set.adapters.CardAdapter
+import ernox.set.interfaces.OnItemClickedListener
+import ernox.set.models.Card
 import ernox.set.viewModels.GameViewModel
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.app_bar_game.*
 import kotlinx.android.synthetic.main.content_game.*
 
-class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnItemClickedListener<Card> {
+
+    override fun onItemClicked(position: Int, item: Card, view: View) {
+        viewModel.onCardSelected(item)
+
+        view.setBackgroundColor(Color.LTGRAY)
+    }
 
     private lateinit var viewModel: GameViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,10 +43,19 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
 
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
-
-
-
         viewModel.onPrepareGame()
+
+        setSetErrorListener()
+    }
+
+    private fun setSetErrorListener() {
+        viewModel.getErrorMessageId().observe(this, Observer {
+            it?.let { showSetError(it) }
+        })
+    }
+
+    private fun showSetError(messageId: Int) {
+        Toast.makeText(applicationContext, messageId, Toast.LENGTH_SHORT).show()
     }
 
     override fun onStart() {
@@ -52,7 +73,7 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         game_table.setHasFixedSize(true)
 
-        game_table.adapter = CardAdapter(viewModel.getTableCards())
+        game_table.adapter = CardAdapter(viewModel.getTableCards(), this)
     }
 
     override fun onBackPressed() {
