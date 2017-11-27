@@ -68,22 +68,12 @@ class GameViewModelUnitTests {
     @Test
     fun should_clearSelectedCards_When_ThreeAreSelected() {
 
-        // Setup
-        val figure = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.GREEN)
-        val card1 = Card(figure, 1)
-        val card2 = Card(figure, 2)
-        val card3 = Card(figure, 3)
-
         // Act
         viewModel.onPrepareGame()
         viewModel.onStartGame()
-
-        viewModel.getTableCards()[0] = card1
-        viewModel.getTableCards()[1] = card2
-        viewModel.getTableCards()[2] = card3
-        viewModel.onCardSelected(card1)
-        viewModel.onCardSelected(card2)
-        viewModel.onCardSelected(card3)
+        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+        selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
+        selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
         assertEquals(0, viewModel.getSelectedCards().size)
@@ -92,19 +82,12 @@ class GameViewModelUnitTests {
     @Test
     fun should_showColorRuleNotSatisfiedError() {
 
-        // Setup
-        val figure1 = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.GREEN)
-        val figure2 = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.RED)
-        val figure3 = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.GREEN)
-
-        val card1 = Card(figure1, 1)
-        val card2 = Card(figure2, 2)
-        val card3 = Card(figure3, 3)
-
         // Act
-        viewModel.onCardSelected(card1)
-        viewModel.onCardSelected(card2)
-        viewModel.onCardSelected(card3)
+        viewModel.onPrepareGame()
+        viewModel.onStartGame()
+        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+        selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.RED, 1)
+        selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
         assertEquals(R.string.rule_color, viewModel.errorMessageId.get())
@@ -113,19 +96,12 @@ class GameViewModelUnitTests {
     @Test
     fun should_showShadingRuleNotSatisfiedError() {
 
-        // Setup
-        val figure1 = Figure(Symbol.TRIANGLE, Shading.SOLID, Color.GREEN)
-        val figure2 = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.GREEN)
-        val figure3 = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.GREEN)
-
-        val card1 = Card(figure1, 1)
-        val card2 = Card(figure2, 2)
-        val card3 = Card(figure3, 3)
-
         // Act
-        viewModel.onCardSelected(card1)
-        viewModel.onCardSelected(card2)
-        viewModel.onCardSelected(card3)
+        viewModel.onPrepareGame()
+        viewModel.onStartGame()
+        selectCard(1, Symbol.TRIANGLE, Shading.SOLID, Color.GREEN, 0)
+        selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
+        selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
         assertEquals(R.string.rule_shading, viewModel.errorMessageId.get())
@@ -134,21 +110,12 @@ class GameViewModelUnitTests {
     @Test
     fun should_showSymbolRuleNotSatisfiedError() {
 
-        // Setup
-        val figure1 = Figure(Symbol.OVAL, Shading.OPEN, Color.GREEN)
-        val figure2 = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.GREEN)
-        val figure3 = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.GREEN)
-
-        val card1 = Card(figure1, 1)
-        val card2 = Card(figure2, 2)
-        val card3 = Card(figure3, 3)
-
         // Act
         viewModel.onPrepareGame()
         viewModel.onStartGame()
-        viewModel.onCardSelected(card1)
-        viewModel.onCardSelected(card2)
-        viewModel.onCardSelected(card3)
+        selectCard(1, Symbol.OVAL, Shading.OPEN, Color.GREEN, 0)
+        selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
+        selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
         assertEquals(R.string.rule_symbol, viewModel.errorMessageId.get())
@@ -157,21 +124,12 @@ class GameViewModelUnitTests {
     @Test
     fun should_showNumberRuleNotSatisfiedError() {
 
-        // Setup
-        val figure1 = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.GREEN)
-        val figure2 = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.GREEN)
-        val figure3 = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.GREEN)
-
-        val card1 = Card(figure1, 2)
-        val card2 = Card(figure2, 2)
-        val card3 = Card(figure3, 3)
-
         // Act
         viewModel.onPrepareGame()
         viewModel.onStartGame()
-        viewModel.onCardSelected(card1)
-        viewModel.onCardSelected(card2)
-        viewModel.onCardSelected(card3)
+        selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+        selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
+        selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
         assertEquals(R.string.rule_number, viewModel.errorMessageId.get())
@@ -180,24 +138,12 @@ class GameViewModelUnitTests {
     @Test
     fun should_IncreaseScore_When_ASetIsFound() {
 
-        // Setup
-        val figure1 = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.GREEN)
-        val figure2 = Figure(Symbol.OVAL, Shading.SOLID, Color.RED)
-        val figure3 = Figure(Symbol.SQUARE, Shading.STRIPED, Color.BLUE)
-
-        val card1 = Card(figure1, 1)
-        val card2 = Card(figure2, 2)
-        val card3 = Card(figure3, 3)
-
         // Act
         viewModel.onPrepareGame()
         viewModel.onStartGame()
-        viewModel.getTableCards()[0] = card1
-        viewModel.getTableCards()[1] = card2
-        viewModel.getTableCards()[2] = card3
-        viewModel.onCardSelected(card1)
-        viewModel.onCardSelected(card2)
-        viewModel.onCardSelected(card3)
+        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+        selectCard(2, Symbol.OVAL, Shading.SOLID, Color.RED, 1)
+        selectCard(3, Symbol.SQUARE, Shading.STRIPED, Color.BLUE, 2)
 
         // Assert
         assertEquals(1, viewModel.getScore())
@@ -206,27 +152,30 @@ class GameViewModelUnitTests {
     @Test
     fun should_PutThreeNewCardsInTable_When_ASetIsFound() {
 
-        // Setup
-        val figure1 = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.GREEN)
-        val figure2 = Figure(Symbol.OVAL, Shading.SOLID, Color.RED)
-        val figure3 = Figure(Symbol.SQUARE, Shading.STRIPED, Color.BLUE)
-
-        val card1 = Card(figure1, 1)
-        val card2 = Card(figure2, 2)
-        val card3 = Card(figure3, 3)
-
         // Act
         viewModel.onPrepareGame()
         viewModel.onStartGame()
-
-        viewModel.getTableCards()[0] = card1
-        viewModel.getTableCards()[1] = card2
-        viewModel.getTableCards()[2] = card3
-        viewModel.onCardSelected(card1)
-        viewModel.onCardSelected(card2)
-        viewModel.onCardSelected(card3)
+        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+        selectCard(2, Symbol.OVAL, Shading.SOLID, Color.RED, 1)
+        selectCard(3, Symbol.SQUARE, Shading.STRIPED, Color.BLUE, 2)
 
         // Assert
         assertEquals(66, viewModel.getDeck().cards.size)
+    }
+
+    private fun selectCard(number: Int,
+                           symbol: Symbol,
+                           shading: Shading,
+                           color: Color,
+                           tablePosition: Int) {
+
+        val figure = Figure(symbol, shading, color)
+
+        val card = Card(figure, number.toShort())
+
+        viewModel.getTableCards()[tablePosition] = card
+
+        viewModel.onCardSelected(card)
+
     }
 }
