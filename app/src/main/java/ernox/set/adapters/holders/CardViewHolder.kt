@@ -36,12 +36,16 @@ class CardViewHolder(itemView: View,
 
     private fun addFiguresToCard(numberOfFigures: Short, figureId: Int) {
 
+        val cardView = itemView.findViewById<LinearLayout>(R.id.card)
+
+        cardView.removeAllViews()
+
         for(i in 1..numberOfFigures)
         {
             val imageView = ImageView(getContext())
             imageView.setImageResource(figureId)
 
-            itemView.findViewById<LinearLayout>(R.id.card).addView(imageView)
+            cardView.addView(imageView)
         }
     }
 }

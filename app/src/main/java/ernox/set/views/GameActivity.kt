@@ -45,10 +45,31 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
         viewModel.onPrepareGame()
 
-        setSetErrorListener()
+        setErrorListener()
+        setTableChangedListener()
     }
 
-    private fun setSetErrorListener() {
+    private fun setTableChangedListener() {
+        viewModel.shouldUpdateTable().observe(this, Observer {
+            if(it != null && it)
+                game_table.adapter.notifyDataSetChanged()
+        })
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.onStartGame()
+        initGameTable()
+    }
+
+    private fun initGameTable() {
+        game_table.layoutManager = GridLayoutManager(applicationContext, 3)
+        game_table.setHasFixedSize(true)
+        game_table.adapter = CardAdapter(viewModel.getTableCards(), this)
+    }
+
+    private fun setErrorListener() {
         viewModel.getErrorMessageId().observe(this, Observer {
             it?.let { showSetError(it) }
         })
@@ -56,24 +77,6 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun showSetError(messageId: Int) {
         Toast.makeText(applicationContext, messageId, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        viewModel.onStartGame()
-
-
-        setUpGameTable()
-    }
-
-    private fun setUpGameTable() {
-
-        game_table.layoutManager = GridLayoutManager(applicationContext, 3)
-
-        game_table.setHasFixedSize(true)
-
-        game_table.adapter = CardAdapter(viewModel.getTableCards(), this)
     }
 
     override fun onBackPressed() {

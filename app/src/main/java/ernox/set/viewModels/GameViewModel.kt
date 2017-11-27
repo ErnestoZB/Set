@@ -3,7 +3,6 @@ package ernox.set.viewModels
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableField
 import ernox.set.R
 import ernox.set.enums.Color
 import ernox.set.enums.Shading
@@ -12,6 +11,7 @@ import ernox.set.models.Card
 import ernox.set.models.Deck
 import ernox.set.models.Figure
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by Ernesto on 25/11/2017.
@@ -19,26 +19,19 @@ import java.util.*
 class GameViewModel : ViewModel() {
 
     private lateinit var deck: Deck
-    fun getDeck(): Deck {
-        return deck
-    }
+    fun getDeck(): Deck = deck
 
     private lateinit var tableCards: ArrayList<Card>
+    fun getTableCards() : ArrayList<Card> = tableCards
 
-
-    fun getTableCards(): ArrayList<Card> {
-        return tableCards
-    }
+    private var updateTable: MutableLiveData<Boolean> = MutableLiveData()
+    fun shouldUpdateTable(): LiveData<Boolean> = updateTable
 
     private val selectedCards: ArrayList<Card> = ArrayList(3)
-    fun getSelectedCards(): ArrayList<Card> {
-        return selectedCards
-    }
+    fun getSelectedCards(): ArrayList<Card> = selectedCards
 
     private var score = 0
-    fun getScore(): Int {
-        return score
-    }
+    fun getScore(): Int = score
 
     private var errorMessageId : MutableLiveData<Int> = MutableLiveData()
     fun getErrorMessageId() : LiveData<Int> = errorMessageId
@@ -54,6 +47,7 @@ class GameViewModel : ViewModel() {
     }
 
     private fun putCardsOnTable() {
+
         tableCards = ArrayList()
 
         for(number in 1..12)
@@ -108,8 +102,10 @@ class GameViewModel : ViewModel() {
         for(card in selectedCards) {
             val position = tableCards.indexOf(card)
 
-            deck.removeCard()?.let { tableCards.set(position, it) }
+            deck.removeCard()?.let { tableCards.set(position!!, it) }
         }
+
+        updateTable.value = true
     }
 
     private fun areSelectedCardsASet() : Boolean {
