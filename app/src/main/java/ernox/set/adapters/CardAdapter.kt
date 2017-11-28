@@ -16,6 +16,13 @@ class CardAdapter(private val items: ArrayList<Card>,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.holder_card, parent, false)
+
+        val height = parent.measuredHeight / 4
+        v.minimumHeight = (height - 64 / parent.context.resources.displayMetrics.density).toInt()
+
+        val width = parent.measuredWidth / 3
+        v.minimumWidth = width
+
         return CardViewHolder(v, onItemClickedListener)
     }
 
@@ -24,6 +31,4 @@ class CardAdapter(private val items: ArrayList<Card>,
     }
 
     override fun getItemCount(): Int = items.size
-
-    fun getItem(position: Int) : Card = items[position]
 }

@@ -8,6 +8,7 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.CardView
 import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
@@ -68,8 +69,8 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun clearCardsBackground() {
 
         for(p in 0..11) {
-            val cardView = game_table.layoutManager.findViewByPosition(p)
-            cardView.setBackgroundColor(Color.WHITE)
+            val cardView: CardView = game_table.layoutManager.findViewByPosition(p) as CardView
+            cardView.setCardBackgroundColor(Color.WHITE)
         }
     }
 
@@ -95,7 +96,7 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onItemClicked(position: Int, item: Card, view: View) {
-        view.setBackgroundColor(Color.parseColor("#FFFFCC"))
+        (view as CardView).setCardBackgroundColor(Color.parseColor("#FFFFCC"))
 
         viewModel.onCardSelected(item)
     }

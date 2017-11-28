@@ -1,7 +1,6 @@
 package ernox.set.adapters.holders
 
 import android.content.Context
-import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
@@ -41,12 +40,28 @@ class CardViewHolder(itemView: View,
 
         cardView.removeAllViews()
 
-        for(i in 1..numberOfFigures)
-        {
-            val imageView = ImageView(getContext())
-            imageView.setImageResource(figureId)
-
+        for(i in 1..numberOfFigures) {
+            val imageView = createFigureImage(figureId)
             cardView.addView(imageView)
         }
+    }
+
+    private fun createFigureImage(figureId: Int) : ImageView {
+
+        val imageView = ImageView(getContext())
+        imageView.setImageResource(figureId)
+
+        val sideSize = getFigureMinSize()
+        imageView.minimumWidth = sideSize
+        imageView.minimumHeight = sideSize
+
+        return imageView
+    }
+
+    private fun getFigureMinSize() : Int {
+
+        val maxHeight = itemView.minimumHeight / 3
+
+        return (maxHeight - 19 / getContext().resources.displayMetrics.density).toInt()
     }
 }
