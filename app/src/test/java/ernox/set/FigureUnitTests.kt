@@ -18,7 +18,7 @@ class FigureUnitTests {
         val figure = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.GREEN)
 
         // Assert
-        assertEquals("ic_green_triangle_open.xml", figure.getDrawableName())
+        assertEquals("ic_green_triangle_open", figure.getDrawableName())
     }
 
     @Test
@@ -28,7 +28,7 @@ class FigureUnitTests {
         val figure = Figure(Symbol.SQUARE, Shading.STRIPED, Color.RED)
 
         // Assert
-        assertEquals("ic_red_square_striped.xml", figure.getDrawableName())
+        assertEquals("ic_red_square_striped", figure.getDrawableName())
     }
 
     @Test
@@ -38,6 +38,6 @@ class FigureUnitTests {
         val figure = Figure(Symbol.OVAL, Shading.SOLID, Color.BLUE)
 
         // Assert
-        assertEquals("ic_blue_oval_solid.xml", figure.getDrawableName())
+        assertEquals("ic_blue_oval_solid", figure.getDrawableName())
     }
 }
