@@ -23,7 +23,7 @@ class CardAdapter(private val items: ArrayList<Card>,
         holder.bind(position, items[position])
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
+
+    fun getItem(position: Int) : Card = items[position]
 }

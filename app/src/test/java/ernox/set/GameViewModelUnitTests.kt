@@ -85,6 +85,20 @@ class GameViewModelUnitTests {
     }
 
     @Test
+    fun should_clearSelectedCardsBackground_When_ThreeAreSelected() {
+
+        // Act
+        viewModel.onPrepareGame()
+        viewModel.onStartGame()
+        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+        selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
+        selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
+
+        // Assert
+        assertTrue(viewModel.shouldClearCardsBackground().value!!)
+    }
+
+    @Test
     fun should_showColorRuleNotSatisfiedError() {
 
         // Act

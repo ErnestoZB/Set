@@ -36,6 +36,8 @@ class GameViewModel : ViewModel() {
     private var errorMessageId : MutableLiveData<Int> = MutableLiveData()
     fun getErrorMessageId() : LiveData<Int> = errorMessageId
 
+    private var clearCardsBackground : MutableLiveData<Boolean> = MutableLiveData()
+    fun shouldClearCardsBackground() : LiveData<Boolean> = clearCardsBackground
 
     fun onPrepareGame() {
         fillDeck()
@@ -90,6 +92,8 @@ class GameViewModel : ViewModel() {
             }
 
             selectedCards.clear()
+
+            clearCardsBackground.value = true
         }
     }
 

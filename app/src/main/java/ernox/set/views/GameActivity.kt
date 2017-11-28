@@ -24,13 +24,8 @@ import kotlinx.android.synthetic.main.content_game.*
 
 class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnItemClickedListener<Card> {
 
-    override fun onItemClicked(position: Int, item: Card, view: View) {
-        viewModel.onCardSelected(item)
-
-        view.setBackgroundColor(Color.LTGRAY)
-    }
-
     private lateinit var viewModel: GameViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
@@ -47,13 +42,7 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setErrorListener()
         setTableChangedListener()
-    }
-
-    private fun setTableChangedListener() {
-        viewModel.shouldUpdateTable().observe(this, Observer {
-            if(it != null && it)
-                game_table.adapter.notifyDataSetChanged()
-        })
+        setClearCardsListener()
     }
 
     override fun onStart() {
@@ -69,6 +58,32 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         game_table.adapter = CardAdapter(viewModel.getTableCards(), this)
     }
 
+    private fun setClearCardsListener() {
+        viewModel.shouldClearCardsBackground().observe(this, Observer {
+            if(it != null && it)
+                clearCardsBackground()
+        })
+    }
+
+    private fun clearCardsBackground() {
+
+        for(p in 0..11) {
+            val cardView = game_table.layoutManager.findViewByPosition(p)
+            cardView.setBackgroundColor(Color.WHITE)
+        }
+    }
+
+    private fun setTableChangedListener() {
+        viewModel.shouldUpdateTable().observe(this, Observer {
+            if(it != null && it)
+                updateGameTable()
+        })
+    }
+
+    private fun updateGameTable() {
+        game_table.adapter.notifyDataSetChanged()
+    }
+
     private fun setErrorListener() {
         viewModel.getErrorMessageId().observe(this, Observer {
             it?.let { showSetError(it) }
@@ -77,6 +92,12 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun showSetError(messageId: Int) {
         Toast.makeText(applicationContext, messageId, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onItemClicked(position: Int, item: Card, view: View) {
+        view.setBackgroundColor(Color.parseColor("#FFFFCC"))
+
+        viewModel.onCardSelected(item)
     }
 
     override fun onBackPressed() {
