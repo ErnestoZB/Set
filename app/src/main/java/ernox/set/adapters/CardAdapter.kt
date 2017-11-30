@@ -18,7 +18,7 @@ class CardAdapter(private val items: ArrayList<Card>,
         val v = LayoutInflater.from(parent.context).inflate(R.layout.holder_card, parent, false)
 
         val height = parent.measuredHeight / 4
-        v.minimumHeight = (height - 64 / parent.context.resources.displayMetrics.density).toInt()
+        v.minimumHeight = (height - 112 / parent.context.resources.displayMetrics.density).toInt()
 
         val width = parent.measuredWidth / 3
         v.minimumWidth = width

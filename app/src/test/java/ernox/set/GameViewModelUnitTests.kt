@@ -146,7 +146,20 @@ class GameViewModelUnitTests {
         selectCard(3, Symbol.SQUARE, Shading.STRIPED, Color.BLUE, 2)
 
         // Assert
-        assertEquals(1, viewModel.getScore())
+        assertEquals(10, viewModel.score.get())
+    }
+
+    @Test
+    fun should_IncreaseSetsDone_When_ASetIsFound() {
+
+        // Act
+        viewModel.onStartGame()
+        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+        selectCard(2, Symbol.OVAL, Shading.SOLID, Color.RED, 1)
+        selectCard(3, Symbol.SQUARE, Shading.STRIPED, Color.BLUE, 2)
+
+        // Assert
+        assertEquals(1, viewModel.setsDone.get())
     }
 
     @Test
@@ -184,7 +197,20 @@ class GameViewModelUnitTests {
         viewModel.onRestartGame()
 
         // Assert
-        assertEquals(0, viewModel.getScore())
+        assertEquals(0, viewModel.score.get())
+    }
+
+    @Test
+    fun should_SetSetsDoneToZero_OnGameRestart() {
+
+        // Setup
+        should_IncreaseSetsDone_When_ASetIsFound()
+
+        // Act
+        viewModel.onRestartGame()
+
+        // Assert
+        assertEquals(0, viewModel.setsDone.get())
     }
 
     @Test

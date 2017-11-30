@@ -2,6 +2,7 @@ package ernox.set.views
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -16,12 +17,11 @@ import android.view.View
 import android.widget.Toast
 import ernox.set.R
 import ernox.set.adapters.CardAdapter
+import ernox.set.databinding.ActivityGameBinding
 import ernox.set.interfaces.OnItemClickedListener
 import ernox.set.models.Card
 import ernox.set.viewModels.GameViewModel
 import kotlinx.android.synthetic.main.activity_game.*
-import kotlinx.android.synthetic.main.app_bar_game.*
-import kotlinx.android.synthetic.main.content_game.*
 
 class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnItemClickedListener<Card> {
 
@@ -29,16 +29,17 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_game)
+
+        val binding: ActivityGameBinding = DataBindingUtil.setContentView(this, R.layout.activity_game)
         setSupportActionBar(toolbar)
 
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
-
         nav_view.setNavigationItemSelectedListener(this)
 
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
+        binding.viewModel = viewModel
 
         setErrorListener()
         setTableChangedListener()

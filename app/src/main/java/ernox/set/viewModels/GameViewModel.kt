@@ -3,6 +3,7 @@ package ernox.set.viewModels
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.databinding.ObservableField
 import ernox.set.R
 import ernox.set.enums.Color
 import ernox.set.enums.Shading
@@ -30,8 +31,9 @@ class GameViewModel : ViewModel() {
     private val selectedCards: ArrayList<Card> = ArrayList(3)
     fun getSelectedCards(): ArrayList<Card> = selectedCards
 
-    private var score = 0
-    fun getScore(): Int = score
+    var score : ObservableField<Int> = ObservableField(0)
+
+    var setsDone : ObservableField<Int> = ObservableField(0)
 
     private var errorMessageId : MutableLiveData<Int> = MutableLiveData()
     fun getErrorMessageId() : LiveData<Int> = errorMessageId
@@ -39,28 +41,26 @@ class GameViewModel : ViewModel() {
     private var clearCardsBackground : MutableLiveData<Boolean> = MutableLiveData()
     fun shouldClearCardsBackground() : LiveData<Boolean> = clearCardsBackground
 
-    fun onStartGame() {
-        fillDeck()
-        shuffleDeck()
-        putCardsOnTable()
-    }
-
     fun onRestartGame() {
 
-        score = 0
-        selectedCards.clear()
+        restartGameValues()
+
         onStartGame()
 
         clearCardsBackground.value = true
         updateTable.value = true
     }
 
-    private fun putCardsOnTable() {
+    private fun restartGameValues() {
+        score.set(0)
+        setsDone.set(0)
+        selectedCards.clear()
+    }
 
-        tableCards.clear()
-
-        for(number in 1..12)
-            deck.removeCard()?.let { tableCards.add(it) }
+    fun onStartGame() {
+        fillDeck()
+        shuffleDeck()
+        putCardsOnTable()
     }
 
     private fun fillDeck() {
@@ -86,6 +86,14 @@ class GameViewModel : ViewModel() {
         Collections.shuffle(deck.cards, Random(seed))
     }
 
+    private fun putCardsOnTable() {
+
+        tableCards.clear()
+
+        for(number in 1..12)
+            deck.removeCard()?.let { tableCards.add(it) }
+    }
+
     fun onCardSelected(card: Card) {
         addToSelectedCards(card)
 
@@ -93,6 +101,8 @@ class GameViewModel : ViewModel() {
         {
             if(areSelectedCardsASet())
             {
+                increaseSetsDone()
+
                 increaseScore()
 
                 putNewCardsInTable()
@@ -180,7 +190,11 @@ class GameViewModel : ViewModel() {
         return symbol1 == symbol2 && symbol2 == symbol3 || symbol1 != symbol2 && symbol2 != symbol3 && symbol3 != symbol1
     }
 
+    private fun increaseSetsDone() {
+        setsDone.set( setsDone.get() + 1)
+    }
+
     private fun increaseScore() {
-        score++
+        score.set( score.get() + 10)
     }
 }
