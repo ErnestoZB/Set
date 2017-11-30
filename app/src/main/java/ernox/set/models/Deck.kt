@@ -5,7 +5,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by Ernesto on 25/11/2017.
  */
-data class Deck(val cards: ArrayList<Card>) {
+data class Deck(var cards: ArrayList<Card> = arrayListOf()) {
 
     fun removeCard() : Card? {
         var card: Card? = null

@@ -39,7 +39,6 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
 
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
-        viewModel.onPrepareGame()
 
         setErrorListener()
         setTableChangedListener()
@@ -120,9 +119,11 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
+            R.id.action_restart -> viewModel.onRestartGame()
             else -> return super.onOptionsItemSelected(item)
         }
+
+        return true
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

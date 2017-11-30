@@ -27,20 +27,9 @@ class GameViewModelUnitTests {
     }
 
     @Test
-    fun should_FillDeck_ToPrepareGame() {
-
-        // Act
-        viewModel.onPrepareGame()
-
-        // Assert
-        assertEquals(81, viewModel.getDeck().cards.size)
-    }
-
-    @Test
     fun should_Have12CardsOnTable_When_GameStarts() {
 
         // Act
-        viewModel.onPrepareGame()
         viewModel.onStartGame()
 
         assertEquals(12, viewModel.getTableCards().size)
@@ -50,7 +39,6 @@ class GameViewModelUnitTests {
     fun should_Have69CardsOnDeck_When_GameStarts() {
 
         // Act
-        viewModel.onPrepareGame()
         viewModel.onStartGame()
 
         assertEquals(69, viewModel.getDeck().cards.size)
@@ -74,7 +62,6 @@ class GameViewModelUnitTests {
     fun should_clearSelectedCards_When_ThreeAreSelected() {
 
         // Act
-        viewModel.onPrepareGame()
         viewModel.onStartGame()
         selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
         selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
@@ -88,7 +75,6 @@ class GameViewModelUnitTests {
     fun should_clearSelectedCardsBackground_When_ThreeAreSelected() {
 
         // Act
-        viewModel.onPrepareGame()
         viewModel.onStartGame()
         selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
         selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
@@ -102,7 +88,6 @@ class GameViewModelUnitTests {
     fun should_showColorRuleNotSatisfiedError() {
 
         // Act
-        viewModel.onPrepareGame()
         viewModel.onStartGame()
         selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
         selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.RED, 1)
@@ -116,7 +101,6 @@ class GameViewModelUnitTests {
     fun should_showShadingRuleNotSatisfiedError() {
 
         // Act
-        viewModel.onPrepareGame()
         viewModel.onStartGame()
         selectCard(1, Symbol.TRIANGLE, Shading.SOLID, Color.GREEN, 0)
         selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
@@ -130,7 +114,6 @@ class GameViewModelUnitTests {
     fun should_showSymbolRuleNotSatisfiedError() {
 
         // Act
-        viewModel.onPrepareGame()
         viewModel.onStartGame()
         selectCard(1, Symbol.OVAL, Shading.OPEN, Color.GREEN, 0)
         selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
@@ -144,11 +127,10 @@ class GameViewModelUnitTests {
     fun should_showNumberRuleNotSatisfiedError() {
 
         // Act
-        viewModel.onPrepareGame()
         viewModel.onStartGame()
-        selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+        selectCard(2, Symbol.OVAL, Shading.OPEN, Color.GREEN, 0)
         selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
-        selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
+        selectCard(3, Symbol.SQUARE, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
         assertEquals(R.string.rule_number, viewModel.getErrorMessageId().value!!)
@@ -158,7 +140,6 @@ class GameViewModelUnitTests {
     fun should_IncreaseScore_When_ASetIsFound() {
 
         // Act
-        viewModel.onPrepareGame()
         viewModel.onStartGame()
         selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
         selectCard(2, Symbol.OVAL, Shading.SOLID, Color.RED, 1)
@@ -172,7 +153,6 @@ class GameViewModelUnitTests {
     fun should_PutThreeNewCardsInTable_When_ASetIsFound() {
 
         // Act
-        viewModel.onPrepareGame()
         viewModel.onStartGame()
         selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
         selectCard(2, Symbol.OVAL, Shading.SOLID, Color.RED, 1)
@@ -186,13 +166,58 @@ class GameViewModelUnitTests {
     fun should_NotSelectACard_If_ItIsAlreadySelected() {
 
         // Act
-        viewModel.onPrepareGame()
         viewModel.onStartGame()
         selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
         selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
 
         // Assert
         assertEquals(1, viewModel.getSelectedCards().size)
+    }
+
+    @Test
+    fun should_SetScoreToZero_OnGameRestart() {
+
+        // Setup
+        should_IncreaseScore_When_ASetIsFound()
+
+        // Act
+        viewModel.onRestartGame()
+
+        // Assert
+        assertEquals(0, viewModel.getScore())
+    }
+
+    @Test
+    fun should_ClearSelectedCards_OnGameRestart() {
+
+        // Setup
+        viewModel.onStartGame()
+        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+        selectCard(1, Symbol.SQUARE, Shading.OPEN, Color.GREEN, 0)
+
+        // Act
+        viewModel.onRestartGame()
+
+        // Assert
+        assertEquals(0, viewModel.getSelectedCards().size)
+    }
+
+    @Test
+    fun should_Have12CardsOnTable_When_GameRestarts() {
+
+        // Act
+        viewModel.onRestartGame()
+
+        assertEquals(12, viewModel.getTableCards().size)
+    }
+
+    @Test
+    fun should_Have69CardsOnDeck_When_GameRestarts() {
+
+        // Act
+        viewModel.onRestartGame()
+
+        assertEquals(69, viewModel.getDeck().cards.size)
     }
 
     private fun selectCard(number: Int,

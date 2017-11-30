@@ -18,10 +18,10 @@ import kotlin.collections.ArrayList
  */
 class GameViewModel : ViewModel() {
 
-    private lateinit var deck: Deck
+    private val deck: Deck = Deck()
     fun getDeck(): Deck = deck
 
-    private lateinit var tableCards: ArrayList<Card>
+    private val tableCards: ArrayList<Card> = arrayListOf()
     fun getTableCards() : ArrayList<Card> = tableCards
 
     private var updateTable: MutableLiveData<Boolean> = MutableLiveData()
@@ -39,18 +39,25 @@ class GameViewModel : ViewModel() {
     private var clearCardsBackground : MutableLiveData<Boolean> = MutableLiveData()
     fun shouldClearCardsBackground() : LiveData<Boolean> = clearCardsBackground
 
-    fun onPrepareGame() {
+    fun onStartGame() {
         fillDeck()
         shuffleDeck()
+        putCardsOnTable()
     }
 
-    fun onStartGame() {
-        putCardsOnTable()
+    fun onRestartGame() {
+
+        score = 0
+        selectedCards.clear()
+        onStartGame()
+
+        clearCardsBackground.value = true
+        updateTable.value = true
     }
 
     private fun putCardsOnTable() {
 
-        tableCards = ArrayList()
+        tableCards.clear()
 
         for(number in 1..12)
             deck.removeCard()?.let { tableCards.add(it) }
@@ -71,7 +78,7 @@ class GameViewModel : ViewModel() {
                         cards.add(card)
                     }
 
-        deck = Deck(cards)
+        deck.cards = cards
     }
 
     private fun shuffleDeck() {
