@@ -124,7 +124,7 @@ class GameViewModel : ViewModel() {
         for(card in selectedCards) {
             val position = tableCards.indexOf(card)
 
-            deck.removeCard()?.let { tableCards.set(position!!, it) }
+            deck.removeCard()?.let { tableCards.set(position, it) }
         }
 
         updateTable.value = true
