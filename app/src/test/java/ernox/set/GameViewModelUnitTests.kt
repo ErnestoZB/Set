@@ -182,6 +182,19 @@ class GameViewModelUnitTests {
         assertEquals(66, viewModel.getDeck().cards.size)
     }
 
+    @Test
+    fun should_NotSelectACard_If_ItIsAlreadySelected() {
+
+        // Act
+        viewModel.onPrepareGame()
+        viewModel.onStartGame()
+        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+
+        // Assert
+        assertEquals(1, viewModel.getSelectedCards().size)
+    }
+
     private fun selectCard(number: Int,
                            symbol: Symbol,
                            shading: Shading,
