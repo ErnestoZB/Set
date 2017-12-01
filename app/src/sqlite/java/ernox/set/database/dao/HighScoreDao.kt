@@ -12,5 +12,5 @@ interface HighScoreDao {
     fun insert(obj: HighScore)
 
     @Query("SELECT * FROM highScores ORDER BY highScore DESC LIMIT :count")
-    fun GetItems(count: Int): Array<HighScore>
+    fun getItems(count: Int): Array<HighScore>
 }

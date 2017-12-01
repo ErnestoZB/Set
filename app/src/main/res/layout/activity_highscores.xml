@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable name="viewModel" type="ernox.set.viewModels.HighScoresViewModel"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/highScores_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:visibility="@{viewModel.isListVisible.get() ? View.VISIBLE : View.GONE}" />
+
+        <TextView
+            android:id="@+id/empty_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_highscores"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:visibility="@{viewModel.isEmptyMessageVisible.get() ? View.VISIBLE : View.GONE}" />
+
+    </RelativeLayout>
+
+</layout>

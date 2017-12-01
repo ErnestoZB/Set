@@ -11,5 +11,7 @@
     <string name="rule_symbol">Symbol rule is not satisfied</string>
     <string name="rule_number">Number rule is not satisfied</string>
     <string name="restart_game">Restart game</string>
+    <string name="highscores">Highscores</string>
+    <string name="no_highscores">No highscores found</string>
 
 </resources>

@@ -3,6 +3,7 @@ package ernox.set.views
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.arch.persistence.room.Room
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.os.Bundle
@@ -126,10 +127,16 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
             R.id.action_restart -> viewModel.onRestartGame()
+            R.id.action_highscores -> launchHighScoresView()
             else -> return super.onOptionsItemSelected(item)
         }
 
         return true
+    }
+
+    private fun launchHighScoresView() {
+        val highScoresIntent = Intent(this, HighScoresActivity::class.java)
+        startActivity(highScoresIntent)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
