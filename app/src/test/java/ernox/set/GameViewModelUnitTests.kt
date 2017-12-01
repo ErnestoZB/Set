@@ -11,7 +11,13 @@ import org.junit.Test
 import org.junit.Assert.*
 import org.junit.Before
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import ernox.set.database.dao.HighScoreDao
+import kotlinx.coroutines.experimental.runBlocking
 import org.junit.Rule
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.Mockito.never
+import org.mockito.MockitoAnnotations
 
 class GameViewModelUnitTests {
 
@@ -19,11 +25,17 @@ class GameViewModelUnitTests {
     @JvmField
     var rule = InstantTaskExecutorRule()
 
+    @Mock
+    private lateinit var highScoreDao: HighScoreDao
+
     private lateinit var viewModel: GameViewModel
 
     @Before
     fun setUp() {
+        MockitoAnnotations.initMocks(this)
+
         viewModel = GameViewModel()
+        viewModel.setHighScoreDao(highScoreDao)
     }
 
     @Test
@@ -229,6 +241,32 @@ class GameViewModelUnitTests {
     }
 
     @Test
+    fun should_SaveScoreInDatabase_If_ScoreGreaterThanZero() {
+
+        // Setup
+        viewModel.score.set(10)
+
+        runBlocking {
+            // Act
+            viewModel.onRestartGame()
+        }
+
+        Mockito.verify(highScoreDao).insert(any())
+    }
+
+    @Test
+    fun should_NotSaveScoreInDatabase_If_ScoreIsZero() {
+
+        // Setup
+        viewModel.score.set(0)
+
+        // Act
+        viewModel.onRestartGame()
+
+        Mockito.verify(highScoreDao, never()).insert(any())
+    }
+
+    @Test
     fun should_Have12CardsOnTable_When_GameRestarts() {
 
         // Act
@@ -260,4 +298,11 @@ class GameViewModelUnitTests {
 
         viewModel.onCardSelected(card)
     }
+
+    protected fun <T> any(): T {
+        Mockito.any<T>()
+        return uninitialized()
+    }
+
+    protected fun <T> uninitialized(): T = null as T
 }

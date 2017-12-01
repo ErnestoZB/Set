@@ -5,19 +5,27 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import ernox.set.R
+import ernox.set.database.dao.HighScoreDao
+import ernox.set.database.tables.HighScore
 import ernox.set.enums.Color
 import ernox.set.enums.Shading
 import ernox.set.enums.Symbol
 import ernox.set.models.Card
 import ernox.set.models.Deck
 import ernox.set.models.Figure
+import org.jetbrains.anko.doAsync
 import java.util.*
 import kotlin.collections.ArrayList
 
 /**
  * Created by Ernesto on 25/11/2017.
  */
-class GameViewModel : ViewModel() {
+class GameViewModel() : ViewModel() {
+
+    private lateinit var highScoreDao: HighScoreDao
+    public fun setHighScoreDao(highScoreDao: HighScoreDao) {
+        this.highScoreDao = highScoreDao
+    }
 
     private val deck: Deck = Deck()
     fun getDeck(): Deck = deck
@@ -31,7 +39,7 @@ class GameViewModel : ViewModel() {
     private val selectedCards: ArrayList<Card> = ArrayList(3)
     fun getSelectedCards(): ArrayList<Card> = selectedCards
 
-    var score : ObservableField<Int> = ObservableField(0)
+    var score : ObservableField<Long> = ObservableField(0)
 
     var setsDone : ObservableField<Int> = ObservableField(0)
 
@@ -43,12 +51,26 @@ class GameViewModel : ViewModel() {
 
     fun onRestartGame() {
 
+        saveScoreInDatabase()
+
         restartGameValues()
 
         onStartGame()
 
         clearCardsBackground.value = true
         updateTable.value = true
+    }
+
+    private fun saveScoreInDatabase() {
+        val points = score.get()
+
+        if(points > 0) {
+            val highScore = HighScore(points)
+
+            doAsync {
+                highScoreDao.insert(highScore)
+            }
+        }
     }
 
     private fun restartGameValues() {

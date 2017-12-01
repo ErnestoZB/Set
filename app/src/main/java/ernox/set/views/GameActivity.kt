@@ -2,6 +2,7 @@ package ernox.set.views
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.arch.persistence.room.Room
 import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.os.Bundle
@@ -17,6 +18,7 @@ import android.view.View
 import android.widget.Toast
 import ernox.set.R
 import ernox.set.adapters.CardAdapter
+import ernox.set.database.AppDatabase
 import ernox.set.databinding.ActivityGameBinding
 import ernox.set.interfaces.OnItemClickedListener
 import ernox.set.models.Card
@@ -38,7 +40,10 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
 
+
+        val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "issstecali").build()
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
+        viewModel.setHighScoreDao(db.highScoreDao())
         binding.viewModel = viewModel
 
         setErrorListener()
