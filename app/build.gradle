@@ -28,6 +28,17 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    flavorDimensions "database"
+    productFlavors {
+
+        sqlite {
+            dimension "database"
+        }
+
+        realm {
+            dimension "database"
+        }
+    }
 }
 
 dependencies {
