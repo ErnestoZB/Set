@@ -8,8 +8,6 @@ import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
-import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
 import android.support.v7.widget.GridLayoutManager
@@ -26,7 +24,7 @@ import ernox.set.models.Card
 import ernox.set.viewModels.GameViewModel
 import kotlinx.android.synthetic.main.activity_game.*
 
-class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnItemClickedListener<Card> {
+class GameActivity : AppCompatActivity(), OnItemClickedListener<Card> {
 
     private lateinit var viewModel: GameViewModel
 
@@ -34,13 +32,6 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
 
         val binding: ActivityGameBinding = DataBindingUtil.setContentView(this, R.layout.activity_game)
-        setSupportActionBar(toolbar)
-
-        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
-        nav_view.setNavigationItemSelectedListener(this)
-
 
         val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "issstecali").build()
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
@@ -107,14 +98,6 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         viewModel.onCardSelected(item)
     }
 
-    override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.game, menu)
@@ -137,32 +120,5 @@ class GameActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun launchHighScoresView() {
         val highScoresIntent = Intent(this, HighScoresActivity::class.java)
         startActivity(highScoresIntent)
-    }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        when (item.itemId) {
-            R.id.nav_camera -> {
-                // Handle the camera action
-            }
-            R.id.nav_gallery -> {
-
-            }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_manage -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
-            }
-        }
-
-        drawer_layout.closeDrawer(GravityCompat.START)
-        return true
     }
 }
