@@ -19,13 +19,14 @@ class HighScoreDaoImpl : HighScoreDao {
         realm.close()
     }
 
-    override fun getItems(count: Int): Array<HighScore> {
+    override fun getItems(limit: Int): Array<HighScore> {
         val realm: Realm = Realm.getDefaultInstance()
 
         val results = realm.where(HighScore::class.java)
                            .findAllSorted("highScore", Sort.DESCENDING)
 
-        val items = Array(results.count(), {
+        val count = if(results.count() < 10) results.count() else limit
+        val items = Array(count, {
             realm.copyFromRealm(results[it])!!
         })
 
