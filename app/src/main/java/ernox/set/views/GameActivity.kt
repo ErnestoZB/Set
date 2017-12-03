@@ -55,8 +55,7 @@ class GameActivity : AppCompatActivity(), OnItemClickedListener<Card> {
 
     private fun setClearCardsListener() {
         viewModel.shouldClearCardsBackground().observe(this, Observer {
-            if(it != null && it)
-                clearCardsBackground()
+            it?.takeIf{ it }?.apply{ clearCardsBackground() }
         })
     }
 
@@ -70,8 +69,7 @@ class GameActivity : AppCompatActivity(), OnItemClickedListener<Card> {
 
     private fun setTableChangedListener() {
         viewModel.shouldUpdateTable().observe(this, Observer {
-            if(it != null && it)
-                updateGameTable()
+            it?.takeIf{ it }?.apply{ updateGameTable() }
         })
     }
 
