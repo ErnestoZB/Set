@@ -52,11 +52,9 @@ class HighScoresActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean
-    {
-        if (item.getItemId() === android.R.id.home)
-        {
-            finish()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> { finish() }
         }
 
         return super.onOptionsItemSelected(item)
