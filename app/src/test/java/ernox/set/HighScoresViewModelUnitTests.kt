@@ -6,6 +6,8 @@ import ernox.set.database.tables.HighScore
 import ernox.set.viewModels.HighScoresViewModel
 import junit.framework.Assert.assertFalse
 import junit.framework.Assert.assertTrue
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
 import org.junit.Before
 import org.junit.Rule
@@ -40,13 +42,13 @@ class HighScoresViewModelUnitTests {
     @Test
     fun should_get10HigherScores_onResume(){
 
-        runBlocking {
+        async(UI) {
             // Act
             viewModel.onResume()
-        }
 
-        // Setup
-        verify(highScoreDao).getItems(10)
+            // Setup
+            verify(highScoreDao).getItems(10)
+        }
     }
 
     @Test
@@ -55,13 +57,13 @@ class HighScoresViewModelUnitTests {
         // Setup
         Mockito.`when`(highScoreDao.getItems(10)).thenReturn(arrayOf(HighScore(10)))
 
-        runBlocking {
+        async(UI) {
             // Act
             viewModel.onResume()
-        }
 
-        // Setup
-        assertTrue(viewModel.isListVisible.get())
+            // Setup
+            assertTrue(viewModel.isListVisible.get())
+        }
     }
 
     @Test
@@ -70,13 +72,13 @@ class HighScoresViewModelUnitTests {
         // Setup
         Mockito.`when`(highScoreDao.getItems(10)).thenReturn(arrayOf(HighScore(10)))
 
-        runBlocking {
+        async(UI) {
             // Act
             viewModel.onResume()
-        }
 
-        // Setup
-        assertFalse(viewModel.isEmptyMessageVisible.get())
+            // Setup
+            assertFalse(viewModel.isEmptyMessageVisible.get())
+        }
     }
 
 
@@ -86,13 +88,13 @@ class HighScoresViewModelUnitTests {
         // Setup
         Mockito.`when`(highScoreDao.getItems(10)).thenReturn(arrayOf())
 
-        runBlocking {
+        async(UI) {
             // Act
             viewModel.onResume()
-        }
 
-        // Setup
-        assertTrue(viewModel.isEmptyMessageVisible.get())
+            // Setup
+            assertTrue(viewModel.isEmptyMessageVisible.get())
+        }
     }
 
     @Test
@@ -101,12 +103,12 @@ class HighScoresViewModelUnitTests {
         // Setup
         Mockito.`when`(highScoreDao.getItems(10)).thenReturn(arrayOf())
 
-        runBlocking {
+        async(UI) {
             // Act
             viewModel.onResume()
-        }
 
-        // Setup
-        assertFalse(viewModel.isListVisible.get())
+            // Setup
+            assertFalse(viewModel.isListVisible.get())
+        }
     }
 }

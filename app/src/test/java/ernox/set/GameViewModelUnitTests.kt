@@ -12,6 +12,8 @@ import org.junit.Assert.*
 import org.junit.Before
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import ernox.set.database.dao.HighScoreDao
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
 import org.junit.Rule
 import org.mockito.Mock
@@ -205,11 +207,13 @@ class GameViewModelUnitTests {
         // Setup
         should_IncreaseScore_When_ASetIsFound()
 
-        // Act
-        viewModel.onRestartGame()
+        async(UI) {
+            // Act
+            viewModel.onRestartGame()
 
-        // Assert
-        assertEquals(0, viewModel.score.get())
+            // Assert
+            assertEquals(0, viewModel.score.get())
+        }
     }
 
     @Test
@@ -218,11 +222,13 @@ class GameViewModelUnitTests {
         // Setup
         should_IncreaseSetsDone_When_ASetIsFound()
 
-        // Act
-        viewModel.onRestartGame()
+        async(UI) {
+            // Act
+            viewModel.onRestartGame()
 
-        // Assert
-        assertEquals(0, viewModel.setsDone.get())
+            // Assert
+            assertEquals(0, viewModel.setsDone.get())
+        }
     }
 
     @Test
@@ -233,11 +239,13 @@ class GameViewModelUnitTests {
         selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
         selectCard(1, Symbol.SQUARE, Shading.OPEN, Color.GREEN, 0)
 
-        // Act
-        viewModel.onRestartGame()
+        async(UI) {
+            // Act
+            viewModel.onRestartGame()
 
-        // Assert
-        assertEquals(0, viewModel.getSelectedCards().size)
+            // Assert
+            assertEquals(0, viewModel.getSelectedCards().size)
+        }
     }
 
     @Test
@@ -246,12 +254,13 @@ class GameViewModelUnitTests {
         // Setup
         viewModel.score.set(10)
 
-        runBlocking {
+        async(UI) {
             // Act
             viewModel.onRestartGame()
+
+            Mockito.verify(highScoreDao).insert(any())
         }
 
-        Mockito.verify(highScoreDao).insert(any())
     }
 
     @Test
@@ -260,28 +269,34 @@ class GameViewModelUnitTests {
         // Setup
         viewModel.score.set(0)
 
-        // Act
-        viewModel.onRestartGame()
+        async(UI) {
+            // Act
+            viewModel.onRestartGame()
 
-        Mockito.verify(highScoreDao, never()).insert(any())
+            Mockito.verify(highScoreDao, never()).insert(any())
+        }
     }
 
     @Test
     fun should_Have12CardsOnTable_When_GameRestarts() {
 
-        // Act
-        viewModel.onRestartGame()
+        async(UI) {
+            // Act
+            viewModel.onRestartGame()
 
-        assertEquals(12, viewModel.getTableCards().size)
+            assertEquals(12, viewModel.getTableCards().size)
+        }
     }
 
     @Test
     fun should_Have69CardsOnDeck_When_GameRestarts() {
 
-        // Act
-        viewModel.onRestartGame()
+        async(UI) {
+            // Act
+            viewModel.onRestartGame()
 
-        assertEquals(69, viewModel.getDeck().cards.size)
+            assertEquals(69, viewModel.getDeck().cards.size)
+        }
     }
 
     private fun selectCard(number: Int,
