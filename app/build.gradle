@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'realm-android'
+
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -39,6 +41,9 @@ android {
             dimension "database"
         }
     }
+    realm {
+        syncEnabled = true
+    }
 }
 
 dependencies {
@@ -66,7 +71,7 @@ dependencies {
     testImplementation "org.mockito:mockito-core:2.8.9"
 
     // Room
-    implementation "android.arch.persistence.room:runtime:1.0.0"
+    sqliteImplementation "android.arch.persistence.room:runtime:1.0.0"
     kapt "android.arch.persistence.room:compiler:1.0.0"
 
     // Data binding

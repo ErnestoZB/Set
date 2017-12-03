@@ -2,12 +2,10 @@ package ernox.set.views
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.arch.persistence.room.Room
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.os.Bundle
-import android.support.design.widget.NavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
 import android.support.v7.widget.GridLayoutManager
@@ -33,9 +31,8 @@ class GameActivity : AppCompatActivity(), OnItemClickedListener<Card> {
 
         val binding: ActivityGameBinding = DataBindingUtil.setContentView(this, R.layout.activity_game)
 
-        val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "issstecali").build()
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
-        viewModel.setHighScoreDao(db.highScoreDao())
+        viewModel.setHighScoreDao(AppDatabase.getHighScoreDao())
         binding.viewModel = viewModel
 
         setErrorListener()

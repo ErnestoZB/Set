@@ -2,7 +2,6 @@ package ernox.set.views
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.arch.persistence.room.Room
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -24,9 +23,8 @@ class HighScoresActivity : AppCompatActivity() {
 
         enableHomeAsUp()
 
-        val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "issstecali").build()
         viewModel = ViewModelProviders.of(this).get(HighScoresViewModel::class.java)
-        viewModel.setHighScoreDao(db.highScoreDao())
+        viewModel.setHighScoreDao(AppDatabase.getHighScoreDao())
 
         val binding: ActivityHighscoresBinding = DataBindingUtil.setContentView(this, R.layout.activity_highscores)
         binding.viewModel = viewModel
