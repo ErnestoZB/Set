@@ -8,7 +8,6 @@
     android:layout_margin="8dp"
     card_view:cardCornerRadius="8dp"
     card_view:cardElevation="2dp"
-    android:stateListAnimator="@animator/button_elevation"
     card_view:cardBackgroundColor="@android:color/white">
 
     <LinearLayout
