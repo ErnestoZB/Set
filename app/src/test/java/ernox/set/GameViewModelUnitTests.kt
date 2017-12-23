@@ -90,12 +90,15 @@ class GameViewModelUnitTests {
 
         // Act
         viewModel.onStartGame()
-        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
-        selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
-        selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
+        val card1 = selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+        val card2 = selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
+        val card3 = selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
-        assertTrue(viewModel.shouldClearCardsBackground().value!!)
+        assertFalse(card1.isSelected)
+        assertFalse(card2.isSelected)
+        assertFalse(card3.isSelected)
+
     }
 
     @Test
@@ -194,6 +197,7 @@ class GameViewModelUnitTests {
 
         // Act
         viewModel.onStartGame()
+        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
         selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
         selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
 
@@ -303,7 +307,7 @@ class GameViewModelUnitTests {
                            symbol: Symbol,
                            shading: Shading,
                            color: Color,
-                           tablePosition: Int) {
+                           tablePosition: Int) : Card {
 
         val figure = Figure(symbol, shading, color)
 
@@ -312,6 +316,8 @@ class GameViewModelUnitTests {
         viewModel.getTableCards()[tablePosition] = card
 
         viewModel.onCardSelected(card)
+
+        return card
     }
 
     protected fun <T> any(): T {

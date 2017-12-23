@@ -11,7 +11,7 @@ import ernox.set.models.Card
 /**
  * Created by Ernesto on 26/11/2017.
  */
-class CardAdapter(private val items: ArrayList<Card>,
+class CardAdapter(private val items: ArrayList<Card?>,
                   private val onItemClickedListener: OnItemClickedListener<Card>) : RecyclerView.Adapter<CardViewHolder>()  {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {

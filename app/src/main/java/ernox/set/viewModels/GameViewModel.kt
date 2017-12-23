@@ -4,15 +4,16 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import ernox.set.R
 import ernox.set.database.dao.HighScoreDao
 import ernox.set.database.tables.HighScore
 import ernox.set.enums.Color
+import ernox.set.enums.SetError
 import ernox.set.enums.Shading
 import ernox.set.enums.Symbol
 import ernox.set.models.Card
 import ernox.set.models.Deck
 import ernox.set.models.Figure
+import ernox.set.models.Set
 import org.jetbrains.anko.doAsync
 import java.util.*
 import kotlin.collections.ArrayList
@@ -20,18 +21,18 @@ import kotlin.collections.ArrayList
 /**
  * Created by Ernesto on 25/11/2017.
  */
-class GameViewModel() : ViewModel() {
+class GameViewModel : ViewModel() {
 
     private lateinit var highScoreDao: HighScoreDao
-    public fun setHighScoreDao(highScoreDao: HighScoreDao) {
+    fun setHighScoreDao(highScoreDao: HighScoreDao) {
         this.highScoreDao = highScoreDao
     }
 
     private val deck: Deck = Deck()
     fun getDeck(): Deck = deck
 
-    private val tableCards: ArrayList<Card> = arrayListOf()
-    fun getTableCards() : ArrayList<Card> = tableCards
+    private val tableCards: ArrayList<Card?> = arrayListOf()
+    fun getTableCards() : ArrayList<Card?> = tableCards
 
     private var updateTable: MutableLiveData<Boolean> = MutableLiveData()
     fun shouldUpdateTable(): LiveData<Boolean> = updateTable
@@ -46,9 +47,6 @@ class GameViewModel() : ViewModel() {
     private var errorMessageId : MutableLiveData<Int> = MutableLiveData()
     fun getErrorMessageId() : LiveData<Int> = errorMessageId
 
-    private var clearCardsBackground : MutableLiveData<Boolean> = MutableLiveData()
-    fun shouldClearCardsBackground() : LiveData<Boolean> = clearCardsBackground
-
     fun onRestartGame() {
 
         saveScoreInDatabase()
@@ -57,7 +55,6 @@ class GameViewModel() : ViewModel() {
 
         onStartGame()
 
-        clearCardsBackground.value = true
         updateTable.value = true
     }
 
@@ -76,7 +73,9 @@ class GameViewModel() : ViewModel() {
     private fun restartGameValues() {
         score.set(0)
         setsDone.set(0)
-        selectedCards.clear()
+        clearSelectedCards()
+        clearHintCards()
+
     }
 
     fun onStartGame() {
@@ -104,8 +103,7 @@ class GameViewModel() : ViewModel() {
     }
 
     private fun shuffleDeck() {
-        val seed = System.nanoTime()
-        Collections.shuffle(deck.cards, Random(seed))
+        deck.shuffle()
     }
 
     private fun putCardsOnTable() {
@@ -121,7 +119,9 @@ class GameViewModel() : ViewModel() {
 
         if(selectedCards.size == 3)
         {
-            if(areSelectedCardsASet())
+            val setError = areSelectedCardsASet(selectedCards[0], selectedCards[1], selectedCards[2])
+
+            if(setError == SetError.NO_ERROR)
             {
                 increaseSetsDone()
 
@@ -129,14 +129,27 @@ class GameViewModel() : ViewModel() {
 
                 putNewCardsInTable()
             }
+            else
+                errorMessageId.value = setError.errorId
 
-            selectedCards.clear()
 
-            clearCardsBackground.value = true
+            clearSelectedCards()
+
+            updateTable.value = true
         }
     }
 
+    private fun clearSelectedCards() {
+
+        for(card in selectedCards)
+            card.isSelected = false
+
+        selectedCards.clear()
+    }
+
     private fun addToSelectedCards(card: Card) {
+        card.isSelected = true
+
         if(selectedCards.indexOf(card) == -1)
             selectedCards.add(card)
     }
@@ -146,68 +159,58 @@ class GameViewModel() : ViewModel() {
         for(card in selectedCards) {
             val position = tableCards.indexOf(card)
 
-            deck.removeCard()?.let { tableCards.set(position, it) }
+            tableCards[position] = deck.removeCard()
         }
-
-        updateTable.value = true
     }
 
-    private fun areSelectedCardsASet() : Boolean {
+    private fun areSelectedCardsASet(card1: Card, card2: Card, card3: Card) : SetError {
 
-        if(!isColorRuleSatisfied()) {
-            errorMessageId.value = R.string.rule_color
-            return false
-        }
+        if(!isColorRuleSatisfied(card1, card2, card3))
+            return SetError.COLOR
 
-        if(!isShadingRuleSatisfied()) {
-            errorMessageId.value = R.string.rule_shading
-            return false
-        }
+        if(!isShadingRuleSatisfied(card1, card2, card3))
+            return SetError.SHADING
 
-        if(!isSymbolRuleSatisfied()) {
-            errorMessageId.value = R.string.rule_symbol
-            return false
-        }
+        if(!isSymbolRuleSatisfied(card1, card2, card3))
+            return SetError.SYMBOL
 
-        if(!isNumberRulesSatisfied()) {
-            errorMessageId.value = R.string.rule_number
-            return false
-        }
+        if(!isNumberRulesSatisfied(card1, card2, card3))
+            return SetError.NUMBER
 
-        return true
+        return SetError.NO_ERROR
     }
 
-    private fun isNumberRulesSatisfied(): Boolean {
-        val number1 = selectedCards[0].numberOfFigures
-        val number2 = selectedCards[1].numberOfFigures
-        val number3 = selectedCards[2].numberOfFigures
+    private fun isNumberRulesSatisfied(card1: Card, card2: Card, card3: Card): Boolean {
+        val number1 = card1.numberOfFigures
+        val number2 = card2.numberOfFigures
+        val number3 = card3.numberOfFigures
 
         return number1 == number2 && number2 == number3 || number1 != number2 && number2 != number3 && number3 != number1
     }
 
-    private fun isColorRuleSatisfied(): Boolean {
+    private fun isColorRuleSatisfied(card1: Card, card2: Card, card3: Card): Boolean {
 
-        val color1 = selectedCards[0].figure.color
-        val color2 = selectedCards[1].figure.color
-        val color3 = selectedCards[2].figure.color
+        val color1 = card1.figure.color
+        val color2 = card2.figure.color
+        val color3 = card3.figure.color
 
         return color1 == color2 && color2 == color3 || color1 != color2 && color2 != color3 && color3 != color1
     }
 
-    private fun isShadingRuleSatisfied(): Boolean {
+    private fun isShadingRuleSatisfied(card1: Card, card2: Card, card3: Card): Boolean {
 
-        val shading1 = selectedCards[0].figure.shading
-        val shading2 = selectedCards[1].figure.shading
-        val shading3 = selectedCards[2].figure.shading
+        val shading1 = card1.figure.shading
+        val shading2 = card2.figure.shading
+        val shading3 = card3.figure.shading
 
         return shading1 == shading2 && shading2 == shading3 || shading1 != shading2 && shading2 != shading3 && shading3 != shading1
     }
 
-    private fun isSymbolRuleSatisfied(): Boolean {
+    private fun isSymbolRuleSatisfied(card1: Card, card2: Card, card3: Card): Boolean {
 
-        val symbol1 = selectedCards[0].figure.symbol
-        val symbol2 = selectedCards[1].figure.symbol
-        val symbol3 = selectedCards[2].figure.symbol
+        val symbol1 = card1.figure.symbol
+        val symbol2 = card2.figure.symbol
+        val symbol3 = card3.figure.symbol
 
         return symbol1 == symbol2 && symbol2 == symbol3 || symbol1 != symbol2 && symbol2 != symbol3 && symbol3 != symbol1
     }
@@ -218,5 +221,55 @@ class GameViewModel() : ViewModel() {
 
     private fun increaseScore() {
         score.set( score.get() + 10)
+    }
+
+    private fun clearHintCards() {
+        for (card in selectedCards) {
+            card.isHint = false
+        }
+    }
+
+    private fun foundAvailableSet(): Set? {
+
+        val tableCardsSize = tableCards.size
+
+        for (x in 0 until tableCardsSize - 2)
+            for (y in x + 1 until tableCardsSize - 1)
+                for (z in y + 1 until tableCardsSize)
+                {
+                    val card1 = tableCards[x]
+                    val card2 = tableCards[y]
+                    val card3 = tableCards[z]
+
+                    if (card1 != null && card2 != null && card3 != null)
+                    {
+                        val isASet = areSelectedCardsASet(card1, card2, card3)
+
+                        if (isASet == SetError.NO_ERROR)
+                        {
+                            clearSelectedCards()
+                            clearHintCards()
+
+                            return Set(card1, card2, card3)
+                        }
+                    }
+                }
+        return null
+    }
+
+    fun onShowHint() {
+
+        val set = foundAvailableSet()
+
+        set?.let { showSetAsHint(set) }
+    }
+
+    private fun showSetAsHint(set: Set) {
+
+        set.card1.isHint = true
+        set.card2.isHint = true
+        set.card3.isHint = true
+
+        updateTable.value = true
     }
 }

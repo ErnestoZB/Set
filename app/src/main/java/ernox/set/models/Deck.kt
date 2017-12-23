@@ -1,5 +1,6 @@
 package ernox.set.models
 
+import java.util.*
 import kotlin.collections.ArrayList
 
 /**
@@ -14,5 +15,10 @@ data class Deck(var cards: ArrayList<Card> = arrayListOf()) {
             card = cards.removeAt(0)
 
         return card
+    }
+
+    fun shuffle() {
+        val seed = System.nanoTime()
+        Collections.shuffle(cards, Random(seed))
     }
 }

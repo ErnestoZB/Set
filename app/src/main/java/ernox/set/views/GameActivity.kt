@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
+import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
@@ -37,7 +38,6 @@ class GameActivity : AppCompatActivity(), OnItemClickedListener<Card> {
 
         setErrorListener()
         setTableChangedListener()
-        setClearCardsListener()
     }
 
     override fun onStart() {
@@ -51,20 +51,7 @@ class GameActivity : AppCompatActivity(), OnItemClickedListener<Card> {
         game_table.layoutManager = GridLayoutManager(applicationContext, 3)
         game_table.setHasFixedSize(true)
         game_table.adapter = CardAdapter(viewModel.getTableCards(), this)
-    }
 
-    private fun setClearCardsListener() {
-        viewModel.shouldClearCardsBackground().observe(this, Observer {
-            it?.takeIf{ it }?.apply{ clearCardsBackground() }
-        })
-    }
-
-    private fun clearCardsBackground() {
-
-        for(p in 0..11) {
-            val cardView: CardView = game_table.layoutManager.findViewByPosition(p) as CardView
-            cardView.setCardBackgroundColor(Color.WHITE)
-        }
     }
 
     private fun setTableChangedListener() {
@@ -105,6 +92,7 @@ class GameActivity : AppCompatActivity(), OnItemClickedListener<Card> {
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
             R.id.action_restart -> viewModel.onRestartGame()
+            R.id.action_clue -> viewModel.onShowHint()
             R.id.action_highscores -> launchHighScoresView()
             else -> return super.onOptionsItemSelected(item)
         }
