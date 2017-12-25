@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <variable name="viewModel"
-            type="ernox.set.viewModels.GameViewModel"/>
+        <variable name="viewModel" type="ernox.set.viewModels.GameViewModel"/>
     </data>
 
             <LinearLayout
@@ -64,7 +63,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
-
+                            app:card="@{viewModel.tableCards[0]}"
                             layout="@layout/holder_card"/>
 
                         <include android:id="@+id/card2"
@@ -72,6 +71,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
+                            app:card="@{viewModel.tableCards[1]}"
                             layout="@layout/holder_card"/>
 
                         <include android:id="@+id/card3"
@@ -79,6 +79,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
+                            app:card="@{viewModel.tableCards[2]}"
                             layout="@layout/holder_card"/>
 
                     </LinearLayout>
@@ -96,6 +97,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
+                            app:card="@{viewModel.tableCards[3]}"
                             layout="@layout/holder_card"/>
 
                         <include android:id="@+id/card5"
@@ -103,6 +105,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
+                            app:card="@{viewModel.tableCards[4]}"
                             layout="@layout/holder_card"/>
 
                         <include android:id="@+id/card6"
@@ -110,6 +113,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
+                            app:card="@{viewModel.tableCards[5]}"
                             layout="@layout/holder_card"/>
 
                     </LinearLayout>
@@ -127,6 +131,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
+                            app:card="@{viewModel.tableCards[6]}"
                             layout="@layout/holder_card"/>
 
                         <include android:id="@+id/card8"
@@ -134,6 +139,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
+                            app:card="@{viewModel.tableCards[7]}"
                             layout="@layout/holder_card"/>
 
                         <include android:id="@+id/card9"
@@ -141,6 +147,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
+                            app:card="@{viewModel.tableCards[8]}"
                             layout="@layout/holder_card"/>
 
                     </LinearLayout>
@@ -158,6 +165,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
+                            app:card="@{viewModel.tableCards[9]}"
                             layout="@layout/holder_card"/>
 
                         <include android:id="@+id/card11"
@@ -165,6 +173,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
+                            app:card="@{viewModel.tableCards[10]}"
                             layout="@layout/holder_card"/>
 
                         <include android:id="@+id/card12"
@@ -172,6 +181,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="8dp"
+                            app:card="@{viewModel.tableCards[11]}"
                             layout="@layout/holder_card"/>
 
                     </LinearLayout>

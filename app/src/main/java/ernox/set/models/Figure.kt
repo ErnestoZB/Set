@@ -11,13 +11,11 @@ data class Figure(val symbol: Symbol,
                   val shading: Shading,
                   val color: Color) {
 
-
-    fun getDrawableName() : String {
+    fun getName() : String {
 
         val nameBuilder = StringBuilder()
 
-        nameBuilder.append("ic_")
-                   .append(color.name).append("_")
+        nameBuilder.append(color.name).append("_")
                    .append(symbol.name).append("_")
                    .append(shading.name)
 
