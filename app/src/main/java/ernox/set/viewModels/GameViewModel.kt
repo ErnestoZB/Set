@@ -34,9 +34,6 @@ class GameViewModel : ViewModel() {
     private val tableCards: ObservableField<ArrayList<Card?>> = ObservableField(arrayListOf())
     fun getTableCards() : ObservableField<ArrayList<Card?>> = tableCards
 
-    private var updateTable: MutableLiveData<Boolean> = MutableLiveData()
-    fun shouldUpdateTable(): LiveData<Boolean> = updateTable
-
     private val selectedCards: ArrayList<Card> = ArrayList(3)
     fun getSelectedCards(): ArrayList<Card> = selectedCards
 
@@ -54,8 +51,6 @@ class GameViewModel : ViewModel() {
         restartGameValues()
 
         onStartGame()
-
-        updateTable.value = true
     }
 
     private fun saveScoreInDatabase() {
@@ -75,6 +70,7 @@ class GameViewModel : ViewModel() {
         setsDone.set(0)
         clearSelectedCards()
         clearHintCards()
+
         tableCards.notifyChange()
     }
 
@@ -128,14 +124,13 @@ class GameViewModel : ViewModel() {
                 increaseScore()
 
                 putNewCardsInTable()
+
+                tableCards.notifyChange()
             }
             else
                 errorMessageId.value = setError.errorId
 
-
             clearSelectedCards()
-
-            updateTable.value = true
         }
     }
 
@@ -269,7 +264,5 @@ class GameViewModel : ViewModel() {
         set.card1.isHint = true
         set.card2.isHint = true
         set.card3.isHint = true
-
-        updateTable.value = true
     }
 }

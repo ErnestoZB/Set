@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android" >
     <data>
         <variable name="card" type="ernox.set.models.Card"/>
+        <variable name="viewModel" type="ernox.set.viewModels.GameViewModel"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -12,7 +13,8 @@
         android:layout_gravity="center"
         android:layout_margin="8dp"
         card_view:cardCornerRadius="8dp"
-        card_view:cardBackgroundColor="@android:color/white">
+        card_view:cardBackgroundColor="@android:color/white"
+        android:onClick="@{() -> viewModel.onCardSelected(card)}">
 
         <ImageView
             android:id="@+id/card"
