@@ -31,8 +31,8 @@ class GameViewModel : ViewModel() {
     private val deck: Deck = Deck()
     fun getDeck(): Deck = deck
 
-    private val tableCards: ArrayList<Card?> = arrayListOf()
-    fun getTableCards() : ArrayList<Card?> = tableCards
+    private val tableCards: ObservableField<ArrayList<Card?>> = ObservableField(arrayListOf())
+    fun getTableCards() : ObservableField<ArrayList<Card?>> = tableCards
 
     private var updateTable: MutableLiveData<Boolean> = MutableLiveData()
     fun shouldUpdateTable(): LiveData<Boolean> = updateTable
@@ -75,7 +75,7 @@ class GameViewModel : ViewModel() {
         setsDone.set(0)
         clearSelectedCards()
         clearHintCards()
-
+        tableCards.notifyChange()
     }
 
     fun onStartGame() {
@@ -108,10 +108,10 @@ class GameViewModel : ViewModel() {
 
     private fun putCardsOnTable() {
 
-        tableCards.clear()
+        tableCards.get().clear()
 
         for(number in 1..12)
-            deck.removeCard()?.let { tableCards.add(it) }
+            deck.removeCard()?.let { tableCards.get().add(it) }
     }
 
     fun onCardSelected(card: Card) {
@@ -157,9 +157,9 @@ class GameViewModel : ViewModel() {
     private fun putNewCardsInTable() {
 
         for(card in selectedCards) {
-            val position = tableCards.indexOf(card)
+            val position = tableCards.get().indexOf(card)
 
-            tableCards[position] = deck.removeCard()
+            tableCards.get()[position] = deck.removeCard()
         }
     }
 
@@ -231,15 +231,15 @@ class GameViewModel : ViewModel() {
 
     private fun foundAvailableSet(): Set? {
 
-        val tableCardsSize = tableCards.size
+        val tableCardsSize = tableCards.get().size
 
         for (x in 0 until tableCardsSize - 2)
             for (y in x + 1 until tableCardsSize - 1)
                 for (z in y + 1 until tableCardsSize)
                 {
-                    val card1 = tableCards[x]
-                    val card2 = tableCards[y]
-                    val card3 = tableCards[z]
+                    val card1 = tableCards.get()[x]
+                    val card2 = tableCards.get()[y]
+                    val card3 = tableCards.get()[z]
 
                     if (card1 != null && card2 != null && card3 != null)
                     {
