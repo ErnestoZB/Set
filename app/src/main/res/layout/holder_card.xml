@@ -14,6 +14,7 @@
         android:layout_margin="8dp"
         card_view:cardCornerRadius="8dp"
         card_view:cardBackgroundColor="@android:color/white"
+        android:stateListAnimator="@{card}"
         android:onClick="@{() -> viewModel.onCardSelected(card)}">
 
         <ImageView

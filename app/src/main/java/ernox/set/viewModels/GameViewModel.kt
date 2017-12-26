@@ -219,9 +219,8 @@ class GameViewModel : ViewModel() {
     }
 
     private fun clearHintCards() {
-        for (card in selectedCards) {
+        for (card in selectedCards)
             card.isHint = false
-        }
     }
 
     private fun foundAvailableSet(): Set? {
@@ -256,7 +255,7 @@ class GameViewModel : ViewModel() {
 
         val set = foundAvailableSet()
 
-        set?.let { showSetAsHint(set) }
+        set?.let { showSetAsHint(it) }
     }
 
     private fun showSetAsHint(set: Set) {
@@ -264,5 +263,7 @@ class GameViewModel : ViewModel() {
         set.card1.isHint = true
         set.card2.isHint = true
         set.card3.isHint = true
+
+        tableCards.notifyChange()
     }
 }
