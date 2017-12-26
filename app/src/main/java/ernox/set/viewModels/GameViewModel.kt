@@ -145,8 +145,11 @@ class GameViewModel : ViewModel() {
     private fun addToSelectedCards(card: Card) {
         card.isSelected = true
 
-        if(selectedCards.indexOf(card) == -1)
+        if(selectedCards.indexOf(card) == -1) {
             selectedCards.add(card)
+
+            tableCards.notifyChange()
+        }
     }
 
     private fun putNewCardsInTable() {

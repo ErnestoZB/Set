@@ -31,17 +31,19 @@ class DataBindingAdapters {
 
             val context = view.context
 
-            if(card.isHint)
-            {
-                val animShake = AnimationUtils.loadAnimation(context, R.anim.shake)
+            when {
+                card.isHint -> {
+                    val animShake = AnimationUtils.loadAnimation(context, R.anim.shake)
+                    view.startAnimation(animShake)
 
-                view.startAnimation(animShake)
-                // view.stateListAnimator = AnimatorInflater.loadStateListAnimator(context, R.animator.card_shake)
+                    card.isHint = false
+                }
+                card.isSelected -> {
+                    val animShake = AnimationUtils.loadAnimation(context, R.anim.shake_infinite)
+                    view.startAnimation(animShake)
+                }
+                else -> view.clearAnimation()
             }
-//            else if(card.isSelected)
-//                view.stateListAnimator = AnimatorInflater.loadStateListAnimator(context, R.animator.button_elevation)
-//            else
-//                view.stateListAnimator = AnimatorInflater.loadStateListAnimator(context, R.animator.button_drop)
         }
     }
 }
