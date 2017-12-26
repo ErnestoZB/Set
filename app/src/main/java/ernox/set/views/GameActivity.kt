@@ -4,26 +4,17 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.CardView
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import ernox.set.R
-import ernox.set.adapters.CardAdapter
 import ernox.set.database.AppDatabase
 import ernox.set.databinding.ActivityGameBinding
-import ernox.set.interfaces.OnItemClickedListener
-import ernox.set.models.Card
 import ernox.set.viewModels.GameViewModel
-import kotlinx.android.synthetic.main.activity_game.*
 
-class GameActivity : AppCompatActivity(), OnItemClickedListener<Card> {
+class GameActivity : AppCompatActivity() {
 
     private lateinit var viewModel: GameViewModel
 
@@ -37,31 +28,12 @@ class GameActivity : AppCompatActivity(), OnItemClickedListener<Card> {
         binding.viewModel = viewModel
 
         setErrorListener()
-        setTableChangedListener()
     }
 
     override fun onStart() {
         super.onStart()
 
         viewModel.onStartGame()
-        initGameTable()
-    }
-
-    private fun initGameTable() {
-        game_table.layoutManager = GridLayoutManager(applicationContext, 3)
-        game_table.setHasFixedSize(true)
-        game_table.adapter = CardAdapter(viewModel.getTableCards(), this)
-
-    }
-
-    private fun setTableChangedListener() {
-        viewModel.shouldUpdateTable().observe(this, Observer {
-            it?.takeIf{ it }?.apply{ updateGameTable() }
-        })
-    }
-
-    private fun updateGameTable() {
-        game_table.adapter.notifyDataSetChanged()
     }
 
     private fun setErrorListener() {
@@ -72,12 +44,6 @@ class GameActivity : AppCompatActivity(), OnItemClickedListener<Card> {
 
     private fun showSetError(messageId: Int) {
         Toast.makeText(applicationContext, messageId, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onItemClicked(position: Int, item: Card, view: View) {
-        (view as CardView).setCardBackgroundColor(Color.parseColor("#FFFFCC"))
-
-        viewModel.onCardSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
