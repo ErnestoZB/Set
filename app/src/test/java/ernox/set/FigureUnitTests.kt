@@ -12,32 +12,32 @@ import org.junit.Assert.*
 class FigureUnitTests {
 
     @Test
-    fun should_showCorrectImageName_When_FigureIsTriangleOpenGreen() {
+    fun should_showCorrectImageName_When_FigureIsDiamondOpenGreen() {
 
         // Setup
-        val figure = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.GREEN)
+        val figure = Figure(Symbol.DIAMOND, Shading.OPEN, Color.GREEN)
 
         // Assert
-        assertEquals("ic_green_triangle_open", figure.getDrawableName())
+        assertEquals("green_diamond_open", figure.getName())
     }
 
     @Test
-    fun should_showCorrectImageName_When_FigureIsSquareStripedRed() {
+    fun should_showCorrectImageName_When_FigureIsSquiggleStripedRed() {
 
         // Setup
-        val figure = Figure(Symbol.SQUARE, Shading.STRIPED, Color.RED)
+        val figure = Figure(Symbol.SQUIGGLE, Shading.STRIPED, Color.RED)
 
         // Assert
-        assertEquals("ic_red_square_striped", figure.getDrawableName())
+        assertEquals("red_squiggle_striped", figure.getName())
     }
 
     @Test
-    fun should_showCorrectImageName_When_FigureIsOvalSolidBlue() {
+    fun should_showCorrectImageName_When_FigureIsOvalSolidPurple() {
 
         // Setup
-        val figure = Figure(Symbol.OVAL, Shading.SOLID, Color.BLUE)
+        val figure = Figure(Symbol.OVAL, Shading.SOLID, Color.PURPLE)
 
         // Assert
-        assertEquals("ic_blue_oval_solid", figure.getDrawableName())
+        assertEquals("purple_oval_solid", figure.getName())
     }
 }

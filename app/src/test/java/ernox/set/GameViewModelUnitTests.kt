@@ -46,7 +46,7 @@ class GameViewModelUnitTests {
         // Act
         viewModel.onStartGame()
 
-        assertEquals(12, viewModel.getTableCards().size)
+        assertEquals(12, viewModel.getTableCards().get().size)
     }
 
     @Test
@@ -62,7 +62,7 @@ class GameViewModelUnitTests {
     fun should_SaveCard_When_CardIsSelected() {
 
         // Setup
-        val figure = Figure(Symbol.TRIANGLE, Shading.OPEN, Color.GREEN)
+        val figure = Figure(Symbol.DIAMOND, Shading.OPEN, Color.GREEN)
         val card = Card(figure, 1)
 
         // Act
@@ -77,9 +77,9 @@ class GameViewModelUnitTests {
 
         // Act
         viewModel.onStartGame()
-        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
-        selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
-        selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
+        selectCard(1, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 0)
+        selectCard(2, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 1)
+        selectCard(3, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
         assertEquals(0, viewModel.getSelectedCards().size)
@@ -90,9 +90,9 @@ class GameViewModelUnitTests {
 
         // Act
         viewModel.onStartGame()
-        val card1 = selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
-        val card2 = selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
-        val card3 = selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
+        val card1 = selectCard(1, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 0)
+        val card2 = selectCard(2, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 1)
+        val card3 = selectCard(3, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
         assertFalse(card1.isSelected)
@@ -106,9 +106,9 @@ class GameViewModelUnitTests {
 
         // Act
         viewModel.onStartGame()
-        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
-        selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.RED, 1)
-        selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
+        selectCard(1, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 0)
+        selectCard(2, Symbol.DIAMOND, Shading.OPEN, Color.RED, 1)
+        selectCard(3, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
         assertEquals(R.string.rule_color, viewModel.getErrorMessageId().value!!)
@@ -119,9 +119,9 @@ class GameViewModelUnitTests {
 
         // Act
         viewModel.onStartGame()
-        selectCard(1, Symbol.TRIANGLE, Shading.SOLID, Color.GREEN, 0)
-        selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
-        selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
+        selectCard(1, Symbol.DIAMOND, Shading.SOLID, Color.GREEN, 0)
+        selectCard(2, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 1)
+        selectCard(3, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
         assertEquals(R.string.rule_shading, viewModel.getErrorMessageId().value!!)
@@ -133,8 +133,8 @@ class GameViewModelUnitTests {
         // Act
         viewModel.onStartGame()
         selectCard(1, Symbol.OVAL, Shading.OPEN, Color.GREEN, 0)
-        selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
-        selectCard(3, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 2)
+        selectCard(2, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 1)
+        selectCard(3, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
         assertEquals(R.string.rule_symbol, viewModel.getErrorMessageId().value!!)
@@ -146,8 +146,8 @@ class GameViewModelUnitTests {
         // Act
         viewModel.onStartGame()
         selectCard(2, Symbol.OVAL, Shading.OPEN, Color.GREEN, 0)
-        selectCard(2, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 1)
-        selectCard(3, Symbol.SQUARE, Shading.OPEN, Color.GREEN, 2)
+        selectCard(2, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 1)
+        selectCard(3, Symbol.SQUIGGLE, Shading.OPEN, Color.GREEN, 2)
 
         // Assert
         assertEquals(R.string.rule_number, viewModel.getErrorMessageId().value!!)
@@ -158,9 +158,9 @@ class GameViewModelUnitTests {
 
         // Act
         viewModel.onStartGame()
-        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+        selectCard(1, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 0)
         selectCard(2, Symbol.OVAL, Shading.SOLID, Color.RED, 1)
-        selectCard(3, Symbol.SQUARE, Shading.STRIPED, Color.BLUE, 2)
+        selectCard(3, Symbol.SQUIGGLE, Shading.STRIPED, Color.PURPLE, 2)
 
         // Assert
         assertEquals(10, viewModel.score.get())
@@ -171,9 +171,9 @@ class GameViewModelUnitTests {
 
         // Act
         viewModel.onStartGame()
-        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+        selectCard(1, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 0)
         selectCard(2, Symbol.OVAL, Shading.SOLID, Color.RED, 1)
-        selectCard(3, Symbol.SQUARE, Shading.STRIPED, Color.BLUE, 2)
+        selectCard(3, Symbol.SQUIGGLE, Shading.STRIPED, Color.PURPLE, 2)
 
         // Assert
         assertEquals(1, viewModel.setsDone.get())
@@ -184,9 +184,9 @@ class GameViewModelUnitTests {
 
         // Act
         viewModel.onStartGame()
-        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+        selectCard(1, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 0)
         selectCard(2, Symbol.OVAL, Shading.SOLID, Color.RED, 1)
-        selectCard(3, Symbol.SQUARE, Shading.STRIPED, Color.BLUE, 2)
+        selectCard(3, Symbol.SQUIGGLE, Shading.STRIPED, Color.PURPLE, 2)
 
         // Assert
         assertEquals(66, viewModel.getDeck().cards.size)
@@ -197,9 +197,9 @@ class GameViewModelUnitTests {
 
         // Act
         viewModel.onStartGame()
-        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
-        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
-        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
+        selectCard(1, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 0)
+        selectCard(1, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 0)
+        selectCard(1, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 0)
 
         // Assert
         assertEquals(1, viewModel.getSelectedCards().size)
@@ -240,8 +240,8 @@ class GameViewModelUnitTests {
 
         // Setup
         viewModel.onStartGame()
-        selectCard(1, Symbol.TRIANGLE, Shading.OPEN, Color.GREEN, 0)
-        selectCard(1, Symbol.SQUARE, Shading.OPEN, Color.GREEN, 0)
+        selectCard(1, Symbol.DIAMOND, Shading.OPEN, Color.GREEN, 0)
+        selectCard(1, Symbol.SQUIGGLE, Shading.OPEN, Color.GREEN, 0)
 
         async(UI) {
             // Act
@@ -288,7 +288,7 @@ class GameViewModelUnitTests {
             // Act
             viewModel.onRestartGame()
 
-            assertEquals(12, viewModel.getTableCards().size)
+            assertEquals(12, viewModel.getTableCards().get().size)
         }
     }
 
@@ -313,7 +313,7 @@ class GameViewModelUnitTests {
 
         val card = Card(figure, number.toShort())
 
-        viewModel.getTableCards()[tablePosition] = card
+        viewModel.getTableCards().get()[tablePosition] = card
 
         viewModel.onCardSelected(card)
 
