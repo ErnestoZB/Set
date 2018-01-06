@@ -9,16 +9,13 @@ import ernox.set.database.tables.HighScore
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.bg
+import javax.inject.Inject
 
 /**
  * Created by Ernesto on 25/11/2017.
  */
-class HighScoresViewModel : ViewModel() {
 
-    private lateinit var highScoreDao: HighScoreDao
-    fun setHighScoreDao(highScoreDao: HighScoreDao) {
-        this.highScoreDao = highScoreDao
-    }
+class HighScoresViewModel @Inject constructor(private val highScoreDao: HighScoreDao) : ViewModel() {
 
     val isEmptyMessageVisible: ObservableField<Boolean> = ObservableField(false)
 

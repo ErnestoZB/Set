@@ -10,21 +10,28 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import ernox.set.R
-import ernox.set.database.AppDatabase
 import ernox.set.databinding.ActivityGameBinding
 import ernox.set.viewModels.GameViewModel
+import android.arch.lifecycle.ViewModelProvider
+import ernox.set.app.SetApplication
+import javax.inject.Inject
+
+
 
 class GameActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: GameViewModel
+    private val viewModel: GameViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(GameViewModel::class.java)
+    }
+
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding: ActivityGameBinding = DataBindingUtil.setContentView(this, R.layout.activity_game)
+        (application as SetApplication).getAppComponent().inject(this)
 
-        viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
-        viewModel.setHighScoreDao(AppDatabase.getHighScoreDao())
+        val binding: ActivityGameBinding = DataBindingUtil.setContentView(this, R.layout.activity_game)
         binding.viewModel = viewModel
 
         setErrorListener()

@@ -36,8 +36,7 @@ class GameViewModelUnitTests {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        viewModel = GameViewModel()
-        viewModel.setHighScoreDao(highScoreDao)
+        viewModel = GameViewModel(highScoreDao)
     }
 
     @Test

@@ -16,17 +16,13 @@ import ernox.set.models.Figure
 import ernox.set.models.Set
 import org.jetbrains.anko.doAsync
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 /**
  * Created by Ernesto on 25/11/2017.
  */
-class GameViewModel : ViewModel() {
-
-    private lateinit var highScoreDao: HighScoreDao
-    fun setHighScoreDao(highScoreDao: HighScoreDao) {
-        this.highScoreDao = highScoreDao
-    }
+class GameViewModel @Inject constructor(private val highScoreDao: HighScoreDao) : ViewModel() {
 
     private val deck: Deck = Deck()
     fun getDeck(): Deck = deck
