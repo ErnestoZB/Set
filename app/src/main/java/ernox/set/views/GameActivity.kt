@@ -35,14 +35,10 @@ class GameActivity : AppCompatActivity() {
         binding.viewModel = viewModel
 
         setErrorListener()
-    }
-
-    override fun onStart() {
-        super.onStart()
 
         viewModel.onStartGame()
     }
-
+    
     private fun setErrorListener() {
         viewModel.getErrorMessageId().observe(this, Observer {
             it?.let { showSetError(it) }
