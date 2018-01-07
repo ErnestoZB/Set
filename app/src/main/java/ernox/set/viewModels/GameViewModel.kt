@@ -119,8 +119,6 @@ class GameViewModel @Inject constructor(private val highScoreDao: HighScoreDao) 
                 putNewCardsInTable()
 
                 verifyIsGameOver()
-
-                tableCards.notifyChange()
             }
             else
                 errorMessageId.value = setError.errorId
@@ -154,6 +152,8 @@ class GameViewModel @Inject constructor(private val highScoreDao: HighScoreDao) 
 
             tableCards.get()[position] = deck.removeCard()
         }
+
+        tableCards.notifyChange()
     }
 
     private fun verifyIsGameOver() {
