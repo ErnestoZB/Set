@@ -57,7 +57,8 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:weightSum="3"
+                        android:baselineAligned="false">
 
                         <include android:id="@+id/card1"
                             android:layout_weight="1"
@@ -94,7 +95,8 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:weightSum="3"
+                        android:baselineAligned="false">
 
                         <include android:id="@+id/card4"
                             android:layout_weight="1"
@@ -131,7 +133,8 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:weightSum="3"
+                        android:baselineAligned="false">
 
                         <include android:id="@+id/card7"
                             android:layout_weight="1"
@@ -168,7 +171,8 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:weightSum="3"
+                        android:baselineAligned="false">
 
                         <include android:id="@+id/card10"
                             android:layout_weight="1"
