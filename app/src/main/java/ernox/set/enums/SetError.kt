@@ -10,5 +10,6 @@ enum class SetError(val errorId: Int) {
     COLOR(R.string.rule_color),
     SHADING(R.string.rule_shading),
     SYMBOL(R.string.rule_symbol),
-    NUMBER(R.string.rule_number)
+    NUMBER(R.string.rule_number),
+    GAME_OVER(R.string.game_over)
 }

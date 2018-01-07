@@ -14,5 +14,6 @@
     <string name="highscores">Highscores</string>
     <string name="no_highscores">No highscores found</string>
     <string name="show_clue">Show clue</string>
+    <string name="game_over">Game over, no more sets are available</string>
 
 </resources>

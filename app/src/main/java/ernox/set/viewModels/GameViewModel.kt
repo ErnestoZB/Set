@@ -15,7 +15,6 @@ import ernox.set.models.Deck
 import ernox.set.models.Figure
 import ernox.set.models.Set
 import org.jetbrains.anko.doAsync
-import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -121,6 +120,8 @@ class GameViewModel @Inject constructor(private val highScoreDao: HighScoreDao) 
 
                 putNewCardsInTable()
 
+                verifyIsGameOver()
+
                 tableCards.notifyChange()
             }
             else
@@ -155,6 +156,20 @@ class GameViewModel @Inject constructor(private val highScoreDao: HighScoreDao) 
 
             tableCards.get()[position] = deck.removeCard()
         }
+    }
+
+    private fun verifyIsGameOver() {
+
+        if(!isSetAvailable())
+        {
+            saveScoreInDatabase()
+
+            showGameOverMessage()
+        }
+    }
+
+    private fun showGameOverMessage() {
+        errorMessageId.value = SetError.GAME_OVER.errorId
     }
 
     private fun areSelectedCardsASet(card1: Card, card2: Card, card3: Card) : SetError {
@@ -222,6 +237,29 @@ class GameViewModel @Inject constructor(private val highScoreDao: HighScoreDao) 
             card.isHint = false
     }
 
+    private fun isSetAvailable(): Boolean {
+
+        val tableCardsSize = tableCards.get().size
+
+        for (x in 0 until tableCardsSize - 2)
+            for (y in x + 1 until tableCardsSize - 1)
+                for (z in y + 1 until tableCardsSize)
+                {
+                    val card1 = tableCards.get()[x]
+                    val card2 = tableCards.get()[y]
+                    val card3 = tableCards.get()[z]
+
+                    if (card1 != null && card2 != null && card3 != null)
+                    {
+                        if(areSelectedCardsASet(card1, card2, card3).errorId == SetError.NO_ERROR.errorId)
+                            return true
+                    }
+                }
+
+        return false
+    }
+
+
     private fun foundAvailableSet(): Set? {
 
         val tableCardsSize = tableCards.get().size
@@ -254,7 +292,14 @@ class GameViewModel @Inject constructor(private val highScoreDao: HighScoreDao) 
 
         val set = foundAvailableSet()
 
-        set?.let { showSetAsHint(it) }
+        if(set == null)
+        {
+            showGameOverMessage()
+        }
+        else
+        {
+            showSetAsHint(set)
+        }
     }
 
     private fun showSetAsHint(set: Set) {
