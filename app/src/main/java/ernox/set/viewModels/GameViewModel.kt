@@ -41,8 +41,6 @@ class GameViewModel @Inject constructor(private val highScoreDao: HighScoreDao) 
 
     fun onRestartGame() {
 
-        saveScoreInDatabase()
-
         restartGameValues()
 
         onStartGame()
