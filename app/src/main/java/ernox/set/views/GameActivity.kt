@@ -15,7 +15,9 @@ import ernox.set.viewModels.GameViewModel
 import android.arch.lifecycle.ViewModelProvider
 import ernox.set.app.SetApplication
 import javax.inject.Inject
-
+import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.crashes.Crashes;
 
 
 class GameActivity : AppCompatActivity() {
@@ -28,6 +30,9 @@ class GameActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        AppCenter.start(application, "ffc24fad-6075-4631-8c60-9afa39f20cdb",
+                Analytics::class.java, Crashes::class.java)
 
         (application as SetApplication).getAppComponent().inject(this)
 
